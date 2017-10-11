@@ -28,10 +28,7 @@ public class GoodsDetailActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected View getLoadingTargetView() {
-        return null;
-    }
+
 
     @Override
     protected boolean isBindEventBusHere() {

@@ -149,10 +149,7 @@ public class RefactActivity extends BaseActivity implements View.OnClickListener
         finish();
     }
 
-    @Override
-    protected View getLoadingTargetView() {
-        return null;
-    }
+
     @Override
     protected boolean isBindEventBusHere() {
         return false;

@@ -167,12 +167,7 @@ public class MainActivity extends BaseActivity {
                                     } else {
                                         showEmpty = false;
                                     }
-                                    toggleShowEmpty(showEmpty, getResources().getString(R.string.empty_data), new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
 
-                                        }
-                                    }, R.drawable.pic_none);
 
                                 } else {
                                     loadMore(list);
@@ -244,18 +239,15 @@ public class MainActivity extends BaseActivity {
         hao_recycleview.setCanloadMore(false);
         swiperefresh.setRefreshing(false);
         loading = false;
-        toggleShowEmpty(true, Constants.subException(mContext, e), new View.OnClickListener() {
+       /* toggleShowEmpty(true, Constants.subException(mContext, e), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
-        }, R.drawable.pic_none);
+        }, R.drawable.pic_none);*/
     }
 
-    @Override
-    protected View getLoadingTargetView() {
-        return view_tip;
-    }
+
     @Override
     protected boolean isBindEventBusHere() {
         return false;
