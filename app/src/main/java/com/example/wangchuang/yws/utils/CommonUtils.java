@@ -1,158 +1,184 @@
+/*
+ * Copyright (c) 2015 [1076559197@qq.com | tchen0707@gmail.com]
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License”);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.example.wangchuang.yws.utils;
 
-import android.graphics.Paint;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.content.Context;
+import android.content.res.TypedArray;
 
-import java.text.DateFormat;
-import java.text.NumberFormat;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.regex.Matcher;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
- * Created by Administrator on 2015/8/3.
+ * Author:  Tau.Chen
+ * Email:   1076559197@qq.com | tauchen1990@gmail.com
+ * Date:    2015/3/10.
+ * Description:
  */
 public class CommonUtils {
-    public static boolean judgePhone(String args) {
-        if (args.length() <= 0) {
+
+    /**
+     * return if str is empty
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isEmpty(String str) {
+        if (str == null || str.length() == 0 || str.equalsIgnoreCase("null") || str.isEmpty() || str.equals("")) {
+            return true;
+        } else {
             return false;
         }
-        String pattern = "^(13[0-9]|14[57]|15[0-9]|17[0-9]|18[0-9])\\d{8}$";
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(args);
-        boolean b = m.matches();
-        return b;
     }
 
-    public static String formatMoney(String money) {
-        String result = "";
-        if (!TextUtils.isEmpty(money)) {
-            NumberFormat ddf1 = NumberFormat.getNumberInstance();
-            ddf1.setMaximumFractionDigits(2);
-            try {
-                result = ddf1.format(Double.valueOf(money));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "";
-            }
-        }
-        return result;
+    /**
+     * get format date
+     *
+     * @param timemillis
+     * @return
+     */
+    public static String getFormatDate(long timemillis) {
+        return new SimpleDateFormat("yyyy年MM月dd日").format(new Date(timemillis));
     }
 
-    public static String formatTime(String time) {
-        String result = time;
-        if (!TextUtils.isEmpty(time)) {
-            String[] timeArr = time.split(" ");
-            if (timeArr.length == 2) {
-                String time_start = timeArr[0];
-                String time_end = timeArr[1];
-                result = time_start + "\n" + time_end;
-            }
-
-        }
-        return result;
-    }
-
-    public static void setPricePoint(final EditText editText) {
-        editText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                if (s.toString().contains(".")) {
-                    if (s.length() - 1 - s.toString().indexOf(".") > 2) {
-                        s = s.toString().subSequence(0,
-                                s.toString().indexOf(".") + 3);
-                        editText.setText(s);
-                        editText.setSelection(s.length());
-                    }
-                }
-                if (s.toString().trim().substring(0).equals(".")) {
-                    s = "0" + s;
-                    editText.setText(s);
-                    editText.setSelection(s.length());
-                }
-
-                if (s.toString().startsWith("0")
-                        && s.toString().trim().length() > 1) {
-                    if (!s.toString().substring(1, 2).equals(".") || s.toString().equals("0.00")) {
-                        editText.setText(s.subSequence(0, 1));
-                        editText.setSelection(1);
-                        return;
-                    }
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-        });
-    }
-
-    public static String GetTime(String time) {
-        DateFormat formatter = new SimpleDateFormat("MM-dd HH:mm:ss");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(Long.valueOf(time));
-        return formatter.format(calendar.getTime());
-    }
-
-    public static String ToSBC(String input) {
-        char c[] = input.toCharArray();
-        for (int i = 0; i < c.length; i++) {
-            if (c[i] == ' ') {
-                c[i] = '\u3000';
-            } else if (c[i] < '\177') {
-                c[i] = (char) (c[i] + 65248);
-            }
-        }
-        return new String(c);
-    }
-    public static String autoSplitText(final TextView tv) {
-        final String rawText = tv.getText().toString(); //原始文本
-        final Paint tvPaint = tv.getPaint(); //paint，包含字体等信息
-        final float tvWidth = tv.getWidth() - tv.getPaddingLeft() - tv.getPaddingRight(); //控件可用宽度
-
-        //将原始文本按行拆分
-        String [] rawTextLines = rawText.replaceAll("\r", "").split("\n");
-        StringBuilder sbNewText = new StringBuilder();
-        for (String rawTextLine : rawTextLines) {
-            if (tvPaint.measureText(rawTextLine) <= tvWidth) {
-                //如果整行宽度在控件可用宽度之内，就不处理了
-                sbNewText.append(rawTextLine);
-            } else {
-                //如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行
-                float lineWidth = 0;
-                for (int cnt = 0; cnt != rawTextLine.length(); ++cnt) {
-                    char ch = rawTextLine.charAt(cnt);
-                    lineWidth += tvPaint.measureText(String.valueOf(ch));
-                    if (lineWidth <= tvWidth) {
-                        sbNewText.append(ch);
+    /**
+     * decode Unicode string
+     *
+     * @param s
+     * @return
+     */
+    public static String decodeUnicodeStr(String s) {
+        StringBuilder sb = new StringBuilder(s.length());
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c == '\\' && chars[i + 1] == 'u') {
+                char cc = 0;
+                for (int j = 0; j < 4; j++) {
+                    char ch = Character.toLowerCase(chars[i + 2 + j]);
+                    if ('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'f') {
+                        cc |= (Character.digit(ch, 16) << (3 - j) * 4);
                     } else {
-                        sbNewText.append("\n");
-                        lineWidth = 0;
-                        --cnt;
+                        cc = 0;
+                        break;
                     }
                 }
+                if (cc > 0) {
+                    i += 5;
+                    sb.append(cc);
+                    continue;
+                }
             }
-            sbNewText.append("\n");
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * encode Unicode string
+     *
+     * @param s
+     * @return
+     */
+    public static String encodeUnicodeStr(String s) {
+        StringBuilder sb = new StringBuilder(s.length() * 3);
+        for (char c : s.toCharArray()) {
+            if (c < 256) {
+                sb.append(c);
+            } else {
+                sb.append("\\u");
+                sb.append(Character.forDigit((c >>> 12) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 8) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 4) & 0xf, 16));
+                sb.append(Character.forDigit((c) & 0xf, 16));
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * convert time str
+     *
+     * @param time
+     * @return
+     */
+    public static String convertTime(int time) {
+
+        time /= 1000;
+        int minute = time / 60;
+        int second = time % 60;
+        minute %= 60;
+        return String.format("%02d:%02d", minute, second);
+    }
+
+    /**
+     * url is usable
+     *
+     * @param url
+     * @return
+     */
+    public static boolean isUrlUsable(String url) {
+        if (CommonUtils.isEmpty(url)) {
+            return false;
         }
 
-        //把结尾多余的\n去掉
-        if (!rawText.endsWith("\n")) {
-            sbNewText.deleteCharAt(sbNewText.length() - 1);
+        URL urlTemp = null;
+        HttpURLConnection connt = null;
+        try {
+            urlTemp = new URL(url);
+            connt = (HttpURLConnection) urlTemp.openConnection();
+            connt.setRequestMethod("HEAD");
+            int returnCode = connt.getResponseCode();
+            if (returnCode == HttpURLConnection.HTTP_OK) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        } finally {
+            connt.disconnect();
         }
+        return false;
+    }
 
-        return sbNewText.toString();
+    /**
+     * is url
+     *
+     * @param url
+     * @return
+     */
+    public static boolean isUrl(String url) {
+        Pattern pattern = Pattern.compile("^([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$");
+        return pattern.matcher(url).matches();
+    }
+
+    /**
+     * get toolbar height
+     *
+     * @param context
+     * @return
+     */
+    public static int getToolbarHeight(Context context) {
+        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(
+                new int[]{android.R.attr.actionBarSize});
+        int toolbarHeight = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+
+        return toolbarHeight;
     }
 }
