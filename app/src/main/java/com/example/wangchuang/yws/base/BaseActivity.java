@@ -229,10 +229,7 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         super.onPause();
 
     }
-    /**
-     * get loading target view
-     */
-    protected abstract View getLoadingTargetView();
+
     /**
      * is bind eventBus
      *
@@ -262,22 +259,7 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         super.onConfigurationChanged(newConfig);
         isConfigChange=true;
     }
-    /**
-     * toggle show empty
-     *
-     * @param toggle
-     */
-    protected void toggleShowEmpty(boolean toggle, String msg, View.OnClickListener onClickListener, int img) {
-        if (null == mVaryViewHelperController) {
-            throw new IllegalArgumentException("You must return a right target view for loading");
-        }
 
-        if (toggle) {
-            mVaryViewHelperController.showEmpty(msg, onClickListener, img);
-        } else {
-            mVaryViewHelperController.restore();
-        }
-    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -106,10 +106,7 @@ public class LoginActivity extends BaseActivity {
     public void rembers(View view) {
         startActivity(new Intent(LoginActivity.this,RefactActivity.class));
     }
-    @Override
-    protected View getLoadingTargetView() {
-        return null;
-    }
+
     @Override
     protected boolean isBindEventBusHere() {
         return false;

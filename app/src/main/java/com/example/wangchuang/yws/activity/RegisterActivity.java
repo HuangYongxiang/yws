@@ -179,10 +179,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         finish();
     }
 
-    @Override
-    protected View getLoadingTargetView() {
-        return null;
-    }
+
     @Override
     protected boolean isBindEventBusHere() {
         return false;
