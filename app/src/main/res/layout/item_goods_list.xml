@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" android:paddingTop="30px"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.example.wangchuang.yws.view.CircularImage
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/iv_header"
+                android:src="@drawable/pic_tx"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_toRightOf="@id/iv_header"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/color_333333"
+                android:id="@+id/tv_name"
+                android:text="姓名"/>
+
+            <ImageView
+                android:layout_marginTop="7dp"
+                android:layout_alignStart="@+id/tv_name"
+                android:layout_below="@+id/tv_name"
+                android:id="@+id/iv_sex"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/icon_nv"/>
+            <ImageView
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@+id/iv_sex"
+                android:layout_below="@+id/tv_name"
+                android:layout_width="27dp"
+                android:layout_height="12dp"
+                android:id="@+id/iv_vip"
+                android:src="@drawable/icon_vip1"/>
+
+            <TextView
+                android:layout_marginRight="3dp"
+                android:layout_toLeftOf="@+id/tv_money"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_fd3240"
+                android:textSize="14sp"
+                android:text="￥"/>
+            <TextView
+                android:id="@+id/tv_money"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/color_fd3240"
+                android:textSize="18sp"
+                android:text="23"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginRight="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pic_spxqc"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="115dp"
+                android:id="@+id/iv_goods1"/>
+
+
+            <ImageView
+                android:layout_marginRight="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pic_spxqc"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="115dp"
+                android:id="@+id/iv_goods2"/>
+
+
+            <ImageView
+                android:scaleType="centerCrop"
+                android:src="@drawable/pic_spxqc"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="115dp"
+                android:id="@+id/iv_goods3"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_describe"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/color_333333"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_666666"
+                android:textSize="12sp"
+                android:id="@+id/tv_time"
+                android:text="2011.1.1"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+
+            <TextView
+                android:id="@+id/tv_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_666666"
+                android:textSize="12sp"
+                android:text="留言7    浏览9  "/>
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f4f4f4"/>
+
+</LinearLayout>
