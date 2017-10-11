@@ -12,6 +12,7 @@ import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.utils.CommonUtil;
 import com.example.wangchuang.yws.utils.CommonUtils;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
@@ -62,7 +63,7 @@ public class LoginActivity extends BaseActivity {
             ToastUtil.show(this,"请输入手机号");
             return;
         }
-        if (!CommonUtils.judgePhone(phones)) {
+        if (!CommonUtil.judgePhone(phones)) {
             ToastUtil.show(this,"请输入正确的手机号");
             return;
         }
