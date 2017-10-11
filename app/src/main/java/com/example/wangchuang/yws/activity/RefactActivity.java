@@ -54,6 +54,9 @@ public class RefactActivity extends BaseActivity implements View.OnClickListener
         enter=(Button) findViewById(R.id.btn_enter);
         enter.setOnClickListener(this);
     }
+
+
+
     String nember="";
     public void onClick(View v) {
         switch (v.getId()) {
@@ -144,6 +147,11 @@ public class RefactActivity extends BaseActivity implements View.OnClickListener
     }
     public void back(View view) {
         finish();
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
     @Override
     protected boolean isBindEventBusHere() {

@@ -2,6 +2,7 @@ package com.example.wangchuang.yws.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.base.BaseActivity;
@@ -75,6 +76,11 @@ public class MineActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
     @Override

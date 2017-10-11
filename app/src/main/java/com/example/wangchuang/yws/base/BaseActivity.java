@@ -229,7 +229,10 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         super.onPause();
 
     }
-
+    /**
+     * get loading target view
+     */
+    protected abstract View getLoadingTargetView();
     /**
      * is bind eventBus
      *

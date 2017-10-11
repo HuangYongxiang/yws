@@ -63,7 +63,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         enter=(Button) findViewById(R.id.btn_enter);
         enter.setOnClickListener(this);
     }
-   String sex="1";
+
+
+
+    String sex="1";
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
@@ -174,6 +177,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
     public void back(View view) {
         finish();
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
     @Override
     protected boolean isBindEventBusHere() {
