@@ -10,7 +10,7 @@ import com.example.wangchuang.yws.utils.StringUtil;
  */
 
 public class Constants {
-    public static final String BaseUrl="47.95.118.150/index.php/App/Members/";
+    public static final String BaseUrl="http://47.95.118.150/index.php/App/Members/";
     public static final String RequestUrl="http://wc306.com/index.php/App/Index/";
 
 

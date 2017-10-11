@@ -88,6 +88,7 @@ public class LoginActivity extends BaseActivity {
                     {
                         if (response.code.equals("200")) {
                             ToastUtil.show(LoginActivity.this,response.msg);
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         }else{
                             ToastUtil.show(LoginActivity.this,response.msg);
                         }
