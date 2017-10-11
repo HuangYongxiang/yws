@@ -1,12 +1,15 @@
-package com.example.wangchuang.yws;
+package com.example.wangchuang.yws.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.wangchuang.yws.R;
+import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
 import com.example.wangchuang.yws.utils.ToastUtil;
+import com.example.wangchuang.yws.utils.eventbus.EventCenter;
+import com.example.wangchuang.yws.utils.netstatus.NetUtils;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -18,12 +21,20 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.GenericsCallback;
 import okhttp3.Call;
 
-public class TestActivity extends AppCompatActivity {
+public class MineActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void initPresenter() {
+
+    }
+
+    @Override
+    public void initView() {
         Map<String, String> params = new HashMap<>();
         params.put("uname",getIntent().getStringExtra("operationUserId"));
         params.put("pid","groupId");
@@ -38,7 +49,7 @@ public class TestActivity extends AppCompatActivity {
                     public void onError(Call call, Exception e, int id)
                     {
                         //dismissLoadingDialog();
-                        ToastUtil.show(TestActivity.this,"网络异常");
+                        ToastUtil.show(MineActivity.this,"网络异常");
                     }
 
                     @Override
@@ -60,9 +71,29 @@ public class TestActivity extends AppCompatActivity {
                         }else
                         if (response.status.equals("400")) {
                             //dismissLoadingDialog();
-                            ToastUtil.show(TestActivity.this, response.msg);
+                            ToastUtil.show(MineActivity.this, response.msg);
                         }
                     }
                 });
+    }
+
+    @Override
+    protected boolean isBindEventBusHere() {
+        return false;
+    }
+
+    @Override
+    protected void onEventComming(EventCenter eventCenter) {
+
+    }
+
+    @Override
+    protected void onNetworkConnected(NetUtils.NetType type) {
+
+    }
+
+    @Override
+    protected void onNetworkDisConnected() {
+
     }
 }
