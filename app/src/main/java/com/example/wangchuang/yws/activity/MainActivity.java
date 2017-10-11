@@ -45,6 +45,7 @@ public class MainActivity extends BaseActivity {
 
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
+    View view_tip;
 
     private int pageNo = 0;
     private int pageSize = 10;
@@ -66,6 +67,7 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        view_tip = (View) findViewById(R.id.view_tip);
 
         adapter = new MainListAdapter(mContext, listData);
         hao_recycleview.setAdapter(adapter);
@@ -110,6 +112,8 @@ public class MainActivity extends BaseActivity {
         });
         initNetData();
     }
+
+
 
     private void initNetData() {
         pageNo = 1;
@@ -248,7 +252,10 @@ public class MainActivity extends BaseActivity {
         }, R.drawable.pic_none);
     }
 
-
+    @Override
+    protected View getLoadingTargetView() {
+        return view_tip;
+    }
     @Override
     protected boolean isBindEventBusHere() {
         return false;

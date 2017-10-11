@@ -52,6 +52,9 @@ public class LoginActivity extends BaseActivity {
         login=(Button) findViewById(R.id.btn_login);
         regist=(Button) findViewById(R.id.btn_register);
     }
+
+
+
     public void back(View view) {
         finish();
     }
@@ -101,6 +104,10 @@ public class LoginActivity extends BaseActivity {
     //忘记密码
     public void rembers(View view) {
         startActivity(new Intent(LoginActivity.this,RefactActivity.class));
+    }
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
     @Override
     protected boolean isBindEventBusHere() {
