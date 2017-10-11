@@ -155,6 +155,15 @@
     <color name="gainsboro">#dcdcdc</color><!--淡灰色 -->
 
 
+
+    <color name="color_ffd44">#ffda44</color>
+    <color name="color_title">#333333</color>
+    <color name="color_line">#dddddd</color>
+    <color name="color_beijing">#f4f4f4</color>
+    <color name="color_ffd444">#fe3543</color>
+    <color name="color_ffd43">#666666</color>
+    <color name="color_ffd433">#0a5cd6</color>
+
     <color name="color_ffda44">#ffda44</color>
     <color name="color_333333">#333333</color>
     <color name="color_666666">#666666</color>
@@ -165,4 +174,5 @@
     <color name="btn_green_unpressed_color">#15955A</color>
     <color name="btn_green_pressed_color">#128651</color>
     <color name="btn_pressed_color">#757575</color>
+
 </resources>

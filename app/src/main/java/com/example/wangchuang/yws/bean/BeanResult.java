@@ -10,5 +10,6 @@ public class BeanResult {
     public String yzm;
     public String msg;
     public String code;
+    public String token;
     public Object data;
 }

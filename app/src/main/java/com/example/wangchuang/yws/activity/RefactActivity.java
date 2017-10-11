@@ -27,19 +27,16 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-public class RegisterActivity extends BaseActivity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener {
+public class RefactActivity extends BaseActivity implements View.OnClickListener{
     EditText tvVerifiCode;//验证码
     TextView tvGetCode;   //获取验证码
     private TimeCount timeCount;
-    RadioButton nan,nv;
-    RadioGroup radioGroup;
     Button enter;
     EditText phone;
     EditText password;
-    EditText name;
     @Override
     public int getLayoutId() {
-        return R.layout.activity_register;
+        return R.layout.activity_refact;
     }
 
     @Override
@@ -50,30 +47,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void initView() {
         phone=(EditText)findViewById(R.id.phone);
         password=(EditText)findViewById(R.id.passwords);
-        name=(EditText)findViewById(R.id.name);
         timeCount = new TimeCount(60000, 1000);
         tvVerifiCode=(EditText)findViewById(R.id.tv_verifi_code);
         tvGetCode=(TextView) findViewById(R.id.tv_get_code);
         tvGetCode.setOnClickListener(this);
-        radioGroup=(RadioGroup) findViewById(R.id.radiogroup);
-        nan=(RadioButton) findViewById(R.id.nan);
-        nv=(RadioButton) findViewById(R.id.nv);
-        radioGroup.setOnCheckedChangeListener(this);
-        radioGroup.check(R.id.nan);
         enter=(Button) findViewById(R.id.btn_enter);
         enter.setOnClickListener(this);
-    }
-   String sex="1";
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.nan:
-                sex="1";
-                break;
-            case R.id.nv:
-                sex="2";
-                break;
-        }
     }
     String nember="";
     public void onClick(View v) {
@@ -93,7 +72,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 timeCount.start();
                 Map<String, String> params = new HashMap<>();
                 params.put("phone",phones);
-                String url= Constants.BaseUrl+Constants.memberUrl1;
+                String url= Constants.BaseUrl+Constants.memberUrl2;
                 OkHttpUtils.post()
                         .params(params)
                         .url(url)
@@ -103,17 +82,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             @Override
                             public void onError(Call call, Exception e, int id)
                             {
-                                ToastUtil.show(RegisterActivity.this,"网络异常");
+                                ToastUtil.show(RefactActivity.this,"网络异常");
                             }
 
                             @Override
                             public void onResponse(BeanResult response, int id)
                             {
                                 if (response.code.equals("200")) {
-                                    ToastUtil.show(RegisterActivity.this,response.msg);
-                                    nember=response.code;
+                                    ToastUtil.show(RefactActivity.this,response.msg);
                                 }else{
-                                    ToastUtil.show(RegisterActivity.this,response.msg);
+                                    ToastUtil.show(RefactActivity.this,response.msg);
                                 }
                             }
                         });
@@ -129,23 +107,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     ToastUtil.show(this,"请输入正确的手机号");
                     return;
                 }
-
                 if (TextUtils.isEmpty(mima)) {
                     ToastUtil.show(this,"密码不能为空");
-                    return;
-                }
-                if (!CommonUtil.judgePhone(phoness)) {
-                    ToastUtil.show(this,"请输入用户名");
                     return;
                 }
                 Map<String, String> paramss = new HashMap<>();
                 paramss.put("phone",phoness);
                 paramss.put("code",tvVerifiCode.getText().toString().trim());
-                paramss.put("sex",sex);
-                paramss.put("user_name",name.getText().toString().trim());
                 paramss.put("password",mima);
-
-                String urls= Constants.BaseUrl+Constants.registerUrl;
+                String urls= Constants.BaseUrl+Constants.refactUrl;
                 OkHttpUtils.post()//
                         .params(paramss)//
                         .url(urls)//
@@ -155,17 +125,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             @Override
                             public void onError(Call call, Exception e, int id)
                             {
-                                ToastUtil.show(RegisterActivity.this,"网络异常");
+                                ToastUtil.show(RefactActivity.this,"网络异常");
                             }
 
                             @Override
                             public void onResponse(BeanResult response, int id)
                             {
                                 if (response.code.equals("200")) {
-                                    ToastUtil.show(RegisterActivity.this,response.msg);
+                                    ToastUtil.show(RefactActivity.this,response.msg);
                                     finish();
                                 }else{
-                                    ToastUtil.show(RegisterActivity.this,response.msg);
+                                    ToastUtil.show(RefactActivity.this,response.msg);
                                 }
                             }
                         });
