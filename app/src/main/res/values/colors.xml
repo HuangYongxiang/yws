@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
 
-    <color name="color_main">#ffd44</color>
+    <color name="color_main">#ffda44</color>
 
 
     <color name="pink">#ffc0cb</color><!--粉红色 -->
@@ -155,5 +155,11 @@
     <color name="gainsboro">#dcdcdc</color><!--淡灰色 -->
 
 
-    <color name="color_ffd44">#ffd44</color>
+    <color name="color_ffd44">#ffda44</color>
+    <color name="color_title">#333333</color>
+    <color name="color_line">#dddddd</color>
+    <color name="color_beijing">#f4f4f4</color>
+    <color name="color_ffd444">#fe3543</color>
+    <color name="color_ffd43">#666666</color>
+    <color name="color_ffd433">#0a5cd6</color>
 </resources>
