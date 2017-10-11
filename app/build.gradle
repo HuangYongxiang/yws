@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.example.wangchuang.yws"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -21,17 +21,19 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support:support-annotations:26.0.0-alpha1'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0'
     compile project(':okhttputils')
 
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.lzy.widget:imagepicker:0.5.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.wang.avi:library:1.0.1'
+    compile 'com.github.fangx:haorefresh:1.0'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support:support-annotations:26.0.0-alpha1'
 }

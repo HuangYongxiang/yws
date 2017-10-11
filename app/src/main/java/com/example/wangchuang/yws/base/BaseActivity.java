@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -16,6 +17,7 @@ import com.example.wangchuang.yws.utils.TUtil;
 import com.example.wangchuang.yws.utils.ToastUitl;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
+import com.example.wangchuang.yws.view.loading.VaryViewHelperController;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -62,7 +64,7 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
     public E mModel;
     public Context mContext;
     private boolean isConfigChange=false;
-
+    private VaryViewHelperController mVaryViewHelperController = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,7 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         doBeforeSetcontentView();
         setContentView(getLayoutId());
         ButterKnife.bind(this);
+
         mContext = this;
         mPresenter = TUtil.getT(this, 0);
         mModel=TUtil.getT(this,1);
@@ -256,7 +259,22 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         super.onConfigurationChanged(newConfig);
         isConfigChange=true;
     }
+    /**
+     * toggle show empty
+     *
+     * @param toggle
+     */
+    protected void toggleShowEmpty(boolean toggle, String msg, View.OnClickListener onClickListener, int img) {
+        if (null == mVaryViewHelperController) {
+            throw new IllegalArgumentException("You must return a right target view for loading");
+        }
 
+        if (toggle) {
+            mVaryViewHelperController.showEmpty(msg, onClickListener, img);
+        } else {
+            mVaryViewHelperController.restore();
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
