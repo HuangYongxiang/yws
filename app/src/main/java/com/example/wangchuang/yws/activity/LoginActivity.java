@@ -53,8 +53,6 @@ public class LoginActivity extends BaseActivity {
         regist=(Button) findViewById(R.id.btn_register);
     }
 
-
-
     public void back(View view) {
         finish();
     }
@@ -74,6 +72,7 @@ public class LoginActivity extends BaseActivity {
         params.put("phone",phones);
         params.put("password",passswords);
         String url= Constants.BaseUrl+Constants.loginUrl;
+        showLoadingDialog("请求中....");
         OkHttpUtils.post()
                 .params(params)
                 .url(url)
@@ -83,6 +82,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e, int id)
                     {
+                        dismissLoadingDialog();
                         ToastUtil.show(LoginActivity.this,"网络异常");
                     }
 
@@ -90,9 +90,11 @@ public class LoginActivity extends BaseActivity {
                     public void onResponse(BeanResult response, int id)
                     {
                         if (response.code.equals("200")) {
+                            dismissLoadingDialog();
                             ToastUtil.show(LoginActivity.this,response.msg);
                             startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         }else{
+                            dismissLoadingDialog();
                             ToastUtil.show(LoginActivity.this,response.msg);
                         }
                     }
@@ -100,7 +102,7 @@ public class LoginActivity extends BaseActivity {
     }
     //注册
     public void register(View view) {
-        startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+        startActivity(new Intent(LoginActivity.this,SettingActivity.class));
     }
     //忘记密码
     public void rembers(View view) {

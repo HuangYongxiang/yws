@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_dialog"
+    android:orientation="vertical" >
+	<!-- vurtnewk start -->
+    <!-- @drawable/base_edit_input -->
+
+    <LinearLayout
+        android:id="@+id/alertdialog_option_one"
+        android:layout_width="250dip"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/alertdialog_option_one_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:paddingTop="15dip"
+            android:text="标题"
+            android:textColor="#262626"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/alertdialog_option_one_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dip"
+            android:paddingTop="5dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:gravity="center_horizontal|top"
+            android:minHeight="44dip"
+            android:text="内容"
+            android:textColor="#262626"
+            android:textSize="12dip" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:background="#cccccc" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alertdialog_option_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/alertdialog_option_two_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minHeight="40dip"
+            android:textColor="@color/black"
+            android:textSize="16dip" />
+
+        <View
+            android:layout_width="0.5dip"
+            android:layout_height="match_parent"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/alertdialog_option_two_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minHeight="40dip"
+            android:textColor="@color/black"
+            android:textSize="16dip" />
+    </LinearLayout>
+<!-- vurtnewk end -->
+</LinearLayout>
