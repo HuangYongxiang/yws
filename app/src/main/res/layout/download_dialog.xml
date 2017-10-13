@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dip"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingBottom="10dip" >
+
+    <LinearLayout
+        android:id="@+id/lin_title"
+        style="@style/line_horizontal_fill"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/tv_text"
+            android:layout_margin="5dp"
+            android:text="标题"
+            android:textColor="#33b5e5" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#33b5e5" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/line_vertical_width_fill"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/tv_down"
+            style="@style/tv_text" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" >
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#eeeeee" />
+
+            <ImageView
+                android:id="@+id/iv_pro"
+                android:layout_width="0dip"
+                android:layout_height="1dp"
+                android:background="#33b5e5" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

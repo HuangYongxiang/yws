@@ -4,15 +4,19 @@ package com.example.wangchuang.yws.base;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 
+import com.example.wangchuang.yws.content.ProgressHUD;
 import com.example.wangchuang.yws.utils.TUtil;
 import com.example.wangchuang.yws.utils.ToastUitl;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
@@ -20,6 +24,8 @@ import com.example.wangchuang.yws.utils.netstatus.NetUtils;
 import com.example.wangchuang.yws.view.loading.VaryViewHelperController;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
 
 import butterknife.ButterKnife;
 
@@ -65,6 +71,7 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
     public Context mContext;
     private boolean isConfigChange=false;
     private VaryViewHelperController mVaryViewHelperController = null;
+    ProgressHUD progressHUD;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +100,43 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         this.initPresenter();
         this.initView();
     }
+    protected  void showLoadingDialog(String msg){
+        try {
+            if(progressHUD==null){
+                progressHUD = new ProgressHUD(this);
+            }
+            progressHUD.setMessage(msg);
+            progressHUD.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
+    }
+    /**
+     * 获取版本号
+     * @return 当前应用的版本号
+     */
+    public String getVersion() {
+        try {
+            PackageManager manager = this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+            String version = info.versionName;
+            return version;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    protected  void dismissLoadingDialog(){
+        try {
+            if(progressHUD!=null&&!isFinishing()){
+                progressHUD.dismiss();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
     /**
      * 设置layout前配置
      */
@@ -274,5 +317,32 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         }
 
 
+    }
+    /**
+     * apk下载路径
+     *
+     * @return
+     */
+    public static String getApkPath() {
+        String path = getRootPath() + File.separator + "APK";
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return path;
+    }
+    /**
+     * 根目录
+     *
+     * @return
+     */
+    public static String getRootPath() {
+        String path = Environment.getExternalStorageDirectory().getPath()
+                + File.separator + "wangchuangfiles";
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return path;
     }
 }
