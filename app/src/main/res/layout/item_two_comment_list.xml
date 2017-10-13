@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_eeeeee"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp">
+
+        <com.example.wangchuang.yws.view.CircularImage
+            android:id="@+id/iv_header"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/pic_tx" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/iv_header"
+            android:text="姓名"
+            android:textColor="@color/color_333333"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_sex"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignStart="@+id/tv_name"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/icon_nv" />
+
+        <ImageView
+
+            android:id="@+id/iv_vip"
+            android:layout_width="27dp"
+            android:layout_height="12dp"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/iv_sex"
+            android:src="@drawable/icon_vip1" />
+
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/iv_sex"
+            android:layout_below="@+id/iv_sex"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:text="content"
+            android:textColor="@color/color_333333"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_content"
+            android:layout_below="@+id/tv_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:text="time"
+            android:textColor="@color/color_666666"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -9,4 +9,7 @@
     <string name="cpb_default_rotation_speed">1</string>
     <string name="cpb_default_sweep_speed">1</string>
     <string name="empty_data">暂无数据</string>
+
+    <string name="talk_reply_hint">回复%s</string>
+    <string name="comment_null_message">内容不能为空</string>
 </resources>

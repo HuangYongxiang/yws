@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99000000">
+
+    <LinearLayout
+        android:id="@+id/reply_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/iv_jp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/icon_jp"/>
+
+        <EditText
+            android:layout_marginLeft="15dp"
+            android:id="@+id/comment_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edit_text_bg"
+            android:hint="回复"
+            android:maxLines="4"
+            android:minHeight="40dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:textColor="@color/color_333333"
+            android:textColorHint="#a8a8a8"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/shape_fd4543"
+            android:gravity="center"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:text="发送"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

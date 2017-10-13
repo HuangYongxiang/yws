@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
+    android:orientation="vertical"
+    tools:context="com.example.wangchuang.yws.activity.PublishActivity">
+    <RelativeLayout
+        android:id="@+id/toolbar_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:padding="5dp"
+            android:layout_marginLeft="10px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/iv_back"
+            android:layout_width="27dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_fh" />
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="发布"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp" />
+
+        <TextView
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="14sp"
+            android:textColor="@color/color_333333"
+            android:id="@+id/tv_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="发布说明"
+            />
+    </RelativeLayout>
+
+
+    <com.example.wangchuang.yws.view.BounceScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout
+            android:background="@color/color_f4f4f4"
+            android:paddingTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:paddingTop="20dp"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/title_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请输入发布宝贝得标题"
+                    android:textColor="@color/color_333333"
+                    android:textSize="16sp"
+                    android:textColorHint="@color/color_999999"
+                    />
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/color_f4f4f4"/>
+                <EditText
+                    android:id="@+id/content_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="描述一下你的宝贝..."
+                    android:minHeight="50dp"
+                    android:textColor="@color/color_333333"
+                    android:textColorHint="@color/color_999999"
+                    android:textSize="14sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <com.example.wangchuang.yws.view.NoScrollGridView
+                        android:id="@+id/gv_gridview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:horizontalSpacing="3dp"
+                        android:layout_gravity="center_horizontal"
+                        android:numColumns="3"
+                        android:scrollbars="none"
+                        android:verticalSpacing="5dp" >
+                    </com.example.wangchuang.yws.view.NoScrollGridView>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f4f4f4"/>
+
+            <RelativeLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/textview"
+                    android:layout_marginTop="15dp"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:minWidth="84dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开个价"
+                    android:textSize="14sp"
+                    android:textColor="@color/color_333333"
+                    android:background="@drawable/shape_fdda44"/>
+
+                <LinearLayout
+                    android:id="@+id/layout"
+                    android:layout_marginTop="47dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_999999"
+                        android:textSize="24sp"
+                        android:text="￥"/>
+                    <EditText
+                        android:id="@+id/money_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="0.00"
+                        android:textColor="@color/color_333333"
+                        android:textSize="24sp"
+                        android:textColorHint="@color/color_999999"
+                        />
+                </LinearLayout>
+
+                <View
+                    android:layout_marginBottom="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/layout"
+                    android:layout_width="128dp"
+                    android:layout_height="1px"
+                    android:background="@color/color_eeeeee"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_publish"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_fd4543"
+                android:text="确定发布"
+                android:textSize="15sp"
+                android:textColor="@color/color_333333"/>
+
+        </LinearLayout>
+    </com.example.wangchuang.yws.view.BounceScrollView>
+</LinearLayout>

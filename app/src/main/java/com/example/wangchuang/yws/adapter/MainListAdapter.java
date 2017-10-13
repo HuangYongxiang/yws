@@ -1,16 +1,20 @@
 package com.example.wangchuang.yws.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wangchuang.yws.R;
+import com.example.wangchuang.yws.activity.GoodsDetailActivity;
 import com.example.wangchuang.yws.bean.GoodsModel;
 import com.example.wangchuang.yws.view.CircularImage;
 
@@ -20,9 +24,7 @@ import java.util.ArrayList;
 
 public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHolder> {
     public ArrayList<GoodsModel> datas = null;
-    private int Type;
     Context context;
-    private boolean isPay;
 
     public MainListAdapter(Context context, ArrayList<GoodsModel> datas) {
         this.context = context;
@@ -82,6 +84,17 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
         }else {
             viewHolder.iv_vip.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_vip2));
         }
+        viewHolder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(context, GoodsDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",model.getId());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     //获取数据的数量
@@ -106,6 +119,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
         public TextView tv_describe;
         public TextView tv_num;
         public TextView tv_time;
+        public LinearLayout layout;
 
 
 
@@ -122,6 +136,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
             tv_describe = (TextView) itemView.findViewById(R.id.tv_describe);
             tv_num = (TextView) itemView.findViewById(R.id.tv_num);
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);
+            layout = (LinearLayout) itemView.findViewById(R.id.layout);
 
         }
     }
