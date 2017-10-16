@@ -17,6 +17,7 @@ import android.view.WindowManager;
 
 
 import com.example.wangchuang.yws.content.ProgressHUD;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.TUtil;
 import com.example.wangchuang.yws.utils.ToastUitl;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
@@ -99,6 +100,7 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         }
         this.initPresenter();
         this.initView();
+
     }
     protected  void showLoadingDialog(String msg){
         try {

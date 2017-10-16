@@ -2,22 +2,28 @@ package com.example.wangchuang.yws.activity;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.wangchuang.yws.MyApplication;
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.CommonUtil;
 import com.example.wangchuang.yws.utils.CommonUtils;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
 import com.google.gson.Gson;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.GenericsCallback;
 
@@ -46,6 +52,9 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        ValueStorage.init(LoginActivity.this);
+        /*ValueStorage.put("username","233");
+        String a=ValueStorage.getString("usernames");*/
         username=(EditText)findViewById(R.id.phone);
         password=(EditText)findViewById(R.id.passwords);
         rember=(TextView) findViewById(R.id.rember);
@@ -58,8 +67,8 @@ public class LoginActivity extends BaseActivity {
     }
     //登录
     public void login(View view) {
-        String phones = username.getText().toString().trim();
-        String passswords = password.getText().toString().trim();
+        final  String phones = username.getText().toString().trim();
+        final String passswords = password.getText().toString().trim();
         if (TextUtils.isEmpty(phones)) {
             ToastUtil.show(this,"请输入手机号");
             return;
@@ -90,9 +99,48 @@ public class LoginActivity extends BaseActivity {
                     public void onResponse(BeanResult response, int id)
                     {
                         if (response.code.equals("200")) {
-                            dismissLoadingDialog();
+
                             ToastUtil.show(LoginActivity.this,response.msg);
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                            EMClient.getInstance().login(phones, passswords, new EMCallBack() {
+
+                                @Override
+                                public void onSuccess() {
+                                    dismissLoadingDialog();
+                                    ValueStorage.put("username",username.getText().toString().trim());
+                                    //ValueStorage.put("username","6D3405A45B5B");
+                                    EMClient.getInstance().groupManager().loadAllGroups();
+                                    EMClient.getInstance().chatManager().loadAllConversations();
+
+                                    boolean updatenick = EMClient.getInstance().pushManager().updatePushNickname(
+                                            MyApplication.currentUserNick.trim());
+                                    if (!updatenick) {
+                                        // Log.e("LoginActivity", "update current user nick fail");
+                                    }
+                                    // DemoHelper.getInstance().getUserProfileManager().asyncGetCurrentUserInfo();
+                                    Intent intent = new Intent(LoginActivity.this,
+                                            ConversationActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onProgress(int progress, String status) {
+                                    // Log.d(TAG, "login: onProgress");
+                                }
+
+                                @Override
+                                public void onError(final int code, final String message) {
+
+                                    runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            dismissLoadingDialog();
+                                            Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) + message,
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                            //startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         }else{
                             dismissLoadingDialog();
                             ToastUtil.show(LoginActivity.this,response.msg);
