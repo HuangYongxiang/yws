@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import com.example.wangchuang.yws.utils.GlideImageLoaderImagePicker;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
+import com.hyphenate.easeui.EaseUI;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
 
@@ -12,15 +15,25 @@ import com.lzy.imagepicker.view.CropImageView;
  * APPLICATION
  */
 public class MyApplication extends Application {
-
+    public static String currentUserNick = "";
     private static MyApplication baseApplication;
     private int maxImgCount = 9;
-
+    public static Context applicationContext;
+    private static MyApplication instance;
     @Override
     public void onCreate() {
         super.onCreate();
-        baseApplication = this;
 
+        applicationContext = this;
+        instance = this;
+
+        //init demo helper
+       // DemoHelper.getInstance().init(applicationContext);
+        EMOptions options=new EMOptions();
+        options.setAcceptInvitationAlways(false);
+        EaseUI.getInstance().init(this, options);
+        EMClient.getInstance().init(this,options);
+        baseApplication = this;
         initImagePicker();
     }
 
@@ -64,5 +77,7 @@ public class MyApplication extends Application {
 //        MultiDex.install(this);
     }
 
-
+    public static MyApplication getInstance() {
+        return instance;
+    }
 }
