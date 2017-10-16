@@ -18,6 +18,7 @@ import com.example.wangchuang.yws.bean.GoodsModel;
 import com.example.wangchuang.yws.bean.UserInfo;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.fragment.CommentFragment;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
@@ -48,7 +49,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
     private NoScrollListView commentList;
     private String id;
     private ArrayList<CommentAllModel> commentData = new ArrayList<>();
-
+    private static final String COMMENT_FRAGMENT = "CommentFragment";
     @Override
     public int getLayoutId() {
         return R.layout.activity_goods_detail;
@@ -305,8 +306,66 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
             mVipIv.setImageDrawable(this.getResources().getDrawable(R.drawable.icon_vip2));
         }
     }
-    public void sendCommend(UserInfo userInfo, String msg) {
+    public void showCommentFrag(UserInfo userInfo) {
+        getCommentFragment(userInfo).show(getSupportFragmentManager(), COMMENT_FRAGMENT);
+    }
 
+    private CommentFragment mCommentFragment;
+
+    private CommentFragment getCommentFragment(UserInfo userInfo) {
+        if (mCommentFragment == null) {
+            mCommentFragment = (CommentFragment) getSupportFragmentManager().
+                    findFragmentByTag(COMMENT_FRAGMENT);
+            if (mCommentFragment == null) {
+                mCommentFragment = new CommentFragment();
+            }
+        }
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(CommentFragment.COMMENT_BEAN, userInfo);
+        mCommentFragment.setArguments(bundle);
+        return mCommentFragment;
+    }
+    public void sendCommend(UserInfo userInfo, String msg) {
+        String url = Constants.RequestUrl + Constants.mainDetailUrl;
+        Map<String, String> params = new HashMap<>();
+        params.put("token","00d51e2300352fa36131780f24bbc5e3e4265a43");
+        params.put("id",userInfo.getOss_head_img()+"");
+        params.put("comment_content",msg+"");
+        //showLoadingDialog("请求中....");
+        OkHttpUtils.post()//
+                .params(params)//
+                .url(url)//
+                .build()//
+                .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id)
+                    {
+                        //dismissLoadingDialog();
+                        ToastUtil.show(GoodsDetailActivity.this,"网络异常");
+                    }
+
+                    @Override
+                    public void onResponse(BeanResult response, int id)
+                    {
+                        if (response.code.equals("200")) {
+                            //dismissLoadingDialog();
+                            try {
+                                data = new GoodsDetailModel();
+                                String object = new Gson().toJson(response);
+                                JSONObject jsonObject = new JSONObject(object);
+                                JSONObject obj = jsonObject.getJSONObject("data");
+
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }else
+                        if (response.status.equals("400")) {
+                            //dismissLoadingDialog();
+                            ToastUtil.show(GoodsDetailActivity.this, response.msg);
+                        }
+                    }
+                });
     }
 
     @Override
