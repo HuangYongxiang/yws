@@ -113,8 +113,8 @@ public class PublishActivity extends BaseActivity {
         String url = Constants.RequestUrl + Constants.collectionUrl;
         Map<String, String> params = new HashMap<>();
         params.put("title","00d51e2300352fa36131780f24bbc5e3e4265a43");
-        params.put("price",21+"");
-        params.put("content",21+"");
+        params.put("price",mMoneyEt.getText().toString()+"");
+        params.put("content",mContentEt.getText().toString()+"");
         params.put("imgs[]",21+"");
         //showLoadingDialog("请求中....");
         OkHttpUtils.post()//

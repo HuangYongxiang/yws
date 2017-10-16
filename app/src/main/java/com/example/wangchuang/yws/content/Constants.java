@@ -29,6 +29,12 @@ public class Constants {
     public static final String DetailCommentUrl="UserDetails/article_commonet_list";//评论列表
     public static final String collectionUrl="UserDetails/collection";//添加收藏
     public static final String cancelCollectionUrl="UserDetails/delect_collection";//取消收藏
+    public static final String userFollowUrl="Others/user_follow";//我的关注
+    public static final String userFansUrl="Others/user_fans";//我的粉丝
+    public static final String otherPublishUrl="Others/user_index_release";//他人发布得
+    public static final String otherPeopleUrl="Others/index";//他人资料
+    public static final String myPublishUrl="User/user_index_release";//我发布的
+    public static final String myCollectionUrl="User/user_collection";//我收藏的
 
 
 

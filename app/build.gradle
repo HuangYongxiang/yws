@@ -24,6 +24,7 @@ dependencies {
     compile project(':okhttputils')
 
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support:design:26.+'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0'
     compile 'com.jakewharton:butterknife:8.8.1'
