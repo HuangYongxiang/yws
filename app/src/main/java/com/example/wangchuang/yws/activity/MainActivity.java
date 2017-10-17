@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
     View view_tip;
-
+    private ImageView iv_message;
     private int pageNo = 0;
     private int pageSize = 10;
     private ArrayList<GoodsModel> listData = new ArrayList<>();
@@ -69,7 +69,13 @@ public class MainActivity extends BaseActivity {
         hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         view_tip = (View) findViewById(R.id.view_tip);
-
+        iv_message = (ImageView) findViewById(R.id.iv_message);
+        iv_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,ConversationActivity.class));
+            }
+        });
         adapter = new MainListAdapter(mContext, listData);
         hao_recycleview.setAdapter(adapter);
         swiperefresh.setColorSchemeResources(R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color,

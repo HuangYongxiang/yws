@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">yws</string>
+    <string name="app_name">原味社</string>
 
     <string name="net_error">网络异常，请检查网络连接</string>
     <string name="common_loading_message">请稍后...</string>
