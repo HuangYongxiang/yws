@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.wangchuang.yws.R;
@@ -13,6 +14,7 @@ import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.bean.GoodsModel;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
@@ -42,7 +44,7 @@ import okhttp3.Call;
 public class PublishGoodsFragment extends BaseFragment {
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
-    View view_tip;
+    private RelativeLayout emptyLayout;
 
     private int pageNo = 0;
     private int pageSize = 10;
@@ -74,8 +76,9 @@ public class PublishGoodsFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        hao_recycleview = (HaoRecyclerView) getActivity().findViewById(R.id.hao_recycleview);
-        swiperefresh = (SwipeRefreshLayout) getActivity().findViewById(R.id.swiperefresh);
+        emptyLayout = (RelativeLayout) rootView.findViewById(R.id.empty_layout);
+        hao_recycleview = (HaoRecyclerView) rootView.findViewById(R.id.hao_recycleview);
+        swiperefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
 
         adapter = new MainListAdapter(getActivity(), listData);
         hao_recycleview.setAdapter(adapter);
@@ -134,7 +137,7 @@ public class PublishGoodsFragment extends BaseFragment {
     private void getData() {
         String url = Constants.RequestUrl + Constants.myPublishUrl;
         Map<String, String> params = new HashMap<>();
-        params.put("token",10+"");
+        params.put("token", ValueStorage.getString("token")+"");
         params.put("limit",pageSize+"");
         params.put("p", pageNo + "");
         //showLoadingDialog("请求中....");
@@ -171,9 +174,9 @@ public class PublishGoodsFragment extends BaseFragment {
                                     refresh(list);
                                     boolean showEmpty;
                                     if (listData == null || listData.size() == 0) {
-                                        showEmpty = true;
+                                        emptyLayout.setVisibility(View.VISIBLE);
                                     } else {
-                                        showEmpty = false;
+                                        emptyLayout.setVisibility(View.GONE);
                                     }
 
 
@@ -184,7 +187,7 @@ public class PublishGoodsFragment extends BaseFragment {
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             //dismissLoadingDialog();
                             ToastUtil.show(getActivity(), response.msg);
                         }
@@ -192,6 +195,8 @@ public class PublishGoodsFragment extends BaseFragment {
                 });
 
     }
+
+
 
     public void refresh(ArrayList<GoodsModel> requestInfo) {
 

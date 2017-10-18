@@ -23,6 +23,7 @@ import com.example.wangchuang.yws.bean.CommentAllModel;
 import com.example.wangchuang.yws.bean.GoodsDetailModel;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.fragment.CommentFragment;
 import com.example.wangchuang.yws.utils.AnimationUtil;
 import com.example.wangchuang.yws.utils.StringUtil;
@@ -63,6 +64,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
     private NoScrollGridView gv_gridview;
     private LinearLayout optionLayout;
     private String id;
+    private boolean isLike = false;
     private ArrayList<CommentAllModel> commentData = new ArrayList<>();
     private static final String COMMENT_FRAGMENT = "CommentFragment";
     @Override
@@ -121,7 +123,11 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.like_rl:
-                sendLike();
+                if (isLike){
+                    cancelCollection();
+                }else {
+                    sendLike();
+                }
                 break;
             case R.id.comment_rl:
                 showCommentFrag(id,"");
@@ -147,7 +153,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
     private void sendLike() {
         String url = Constants.RequestUrl + Constants.collectionUrl;
         Map<String, String> params = new HashMap<>();
-        params.put("token","e8cd6c84c0e9e5a690f5a46d0cf969afe954000b");
+        params.put("token", ValueStorage.getString("token")+"");
         params.put("id",id+"");
         //showLoadingDialog("请求中....");
         OkHttpUtils.post()//
@@ -173,13 +179,14 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                                 JSONObject jsonObject = new JSONObject(object);
                                 String dataJson = jsonObject.optString("data");
                                 Type type = new TypeToken<List<CommentAllModel>>(){}.getType();
+                                isLike = true;
                                 mLikeIv.setImageDrawable(getResources().getDrawable(R.drawable.icon_sc2));
                                 mLikeTv.setText("已收藏");
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             //dismissLoadingDialog();
                             ToastUtil.show(GoodsDetailActivity.this, response.msg);
                         }
@@ -189,7 +196,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
     private void cancelCollection() {
         String url = Constants.RequestUrl + Constants.cancelCollectionUrl;
         Map<String, String> params = new HashMap<>();
-        params.put("token","e8cd6c84c0e9e5a690f5a46d0cf969afe954000b");
+        params.put("token",ValueStorage.getString("token")+"");
         params.put("id",id+"");
         //showLoadingDialog("请求中....");
         OkHttpUtils.post()//
@@ -215,13 +222,14 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                                 JSONObject jsonObject = new JSONObject(object);
                                 String dataJson = jsonObject.optString("data");
                                 Type type = new TypeToken<List<CommentAllModel>>(){}.getType();
+                                isLike = false;
                                 mLikeIv.setImageDrawable(getResources().getDrawable(R.drawable.icon_sc1));
                                 mLikeTv.setText("收藏");
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             //dismissLoadingDialog();
                             ToastUtil.show(GoodsDetailActivity.this, response.msg);
                         }
@@ -235,7 +243,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
     private void getCommentData() {
         String url = Constants.RequestUrl + Constants.DetailCommentUrl;
         Map<String, String> params = new HashMap<>();
-        params.put("token","e8cd6c84c0e9e5a690f5a46d0cf969afe954000b");
+        params.put("token",ValueStorage.getString("token")+"");
         params.put("id",id+"");
         //showLoadingDialog("请求中....");
         OkHttpUtils.post()//
@@ -276,7 +284,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             //dismissLoadingDialog();
                             ToastUtil.show(GoodsDetailActivity.this, response.msg);
                         }
@@ -291,7 +299,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
     private void getData() {
         String url = Constants.RequestUrl + Constants.mainDetailUrl;
         Map<String, String> params = new HashMap<>();
-        params.put("token","e8cd6c84c0e9e5a690f5a46d0cf969afe954000b");
+        params.put("token",ValueStorage.getString("token")+"");
         params.put("id",id+"");
         //showLoadingDialog("请求中....");
         OkHttpUtils.post()//
@@ -337,14 +345,14 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                                 data.setMy_user_type(obj.getString("my_user_type"));
                                 data.setThis_user_type(obj.getString("this_user_type"));
                                /* String dataJson = jsonObject.optString("data");
-                                Type type = new TypeToken<List<GoodsDetailModel>>(){}.getType();
+                                Type type = new TypeToken<GoodsDetailModel>(){}.getType();
                                 data = new Gson().fromJson(dataJson, type);*/
                                 initData();
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             //dismissLoadingDialog();
                             ToastUtil.show(GoodsDetailActivity.this, response.msg);
                         }
@@ -377,12 +385,12 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
 
-        if(data.getMy_user_type().equals("0")){
-            mOptionIv.setVisibility(View.GONE);
-            likeRl.setVisibility(View.VISIBLE);
-        }else {
+        if(data.getMy_user_type().equals("1")){
             mOptionIv.setVisibility(View.VISIBLE);
             likeRl.setVisibility(View.GONE);
+        }else {
+            mOptionIv.setVisibility(View.GONE);
+            likeRl.setVisibility(View.VISIBLE);
         }
         Glide.with(GoodsDetailActivity.this).load(data.getUser_head_img()).asBitmap().placeholder(R.drawable.pic_tx).error(R.drawable.pic_tx).centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -409,12 +417,14 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
         }else {
             mVipIv.setImageDrawable(this.getResources().getDrawable(R.drawable.icon_vip2));
         }
-        if (data.getCollection_status().equals("0")){
-            mLikeIv.setImageDrawable(getResources().getDrawable(R.drawable.icon_sc1));
-            mLikeTv.setText("收藏");
-        }else {
+        if (data.getCollection_status().equals("1")){
+            isLike = true;
             mLikeIv.setImageDrawable(getResources().getDrawable(R.drawable.icon_sc2));
             mLikeTv.setText("已收藏");
+        }else {
+            isLike = false;
+            mLikeIv.setImageDrawable(getResources().getDrawable(R.drawable.icon_sc1));
+            mLikeTv.setText("收藏");
         }
         if(data.getMy_user_type().equals("1")){//是自己
             mOptionIv.setVisibility(View.VISIBLE);
@@ -482,7 +492,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
     public void sendCommend(String id, String msg) {
         String url = Constants.RequestUrl + Constants.PushCommentUrl;
         Map<String, String> params = new HashMap<>();
-        params.put("token","e8cd6c84c0e9e5a690f5a46d0cf969afe954000b");
+        params.put("token",ValueStorage.getString("token")+"");
         params.put("id",id+"");
         params.put("comment_content",msg+"");
         //showLoadingDialog("请求中....");
@@ -514,7 +524,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             //dismissLoadingDialog();
                             ToastUtil.show(GoodsDetailActivity.this, response.msg);
                         }

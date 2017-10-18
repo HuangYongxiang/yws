@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
     View view_tip;
-    private ImageView mineIv,messageIv;
+    private ImageView iv_message,mineIv;
     private int pageNo = 0;
     private int pageSize = 10;
     private ArrayList<GoodsModel> listData = new ArrayList<>();
@@ -66,11 +66,22 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        mineIv = (ImageView) findViewById(R.id.iv_mine);
         hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        view_tip = (View) findViewById(R.id.view_tip);
-
+        iv_message = (ImageView) findViewById(R.id.iv_message);
+        mineIv = (ImageView) findViewById(R.id.iv_mine);
+        iv_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,ConversationActivity.class));
+            }
+        });
+        mineIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,MineActivity.class));
+            }
+        });
         adapter = new MainListAdapter(mContext, listData);
         hao_recycleview.setAdapter(adapter);
         swiperefresh.setColorSchemeResources(R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color,
@@ -112,12 +123,7 @@ public class MainActivity extends BaseActivity {
                 getData();
             }
         });
-        mineIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,MineActivity.class));
-            }
-        });
+
         initNetData();
     }
 
@@ -184,7 +190,7 @@ public class MainActivity extends BaseActivity {
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             //dismissLoadingDialog();
                             ToastUtil.show(MainActivity.this, response.msg);
                         }

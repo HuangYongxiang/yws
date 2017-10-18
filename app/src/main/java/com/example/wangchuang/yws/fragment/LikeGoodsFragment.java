@@ -4,16 +4,20 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.activity.OtherPeopleActivity;
+import com.example.wangchuang.yws.adapter.CollectionListAdapter;
 import com.example.wangchuang.yws.adapter.MainListAdapter;
 import com.example.wangchuang.yws.base.BaseFragment;
 import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.bean.GoodsModel;
+import com.example.wangchuang.yws.bean.LikeGoodsModel;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
@@ -43,12 +47,12 @@ import okhttp3.Call;
 public class LikeGoodsFragment extends BaseFragment {
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
-    View view_tip;
+    private RelativeLayout emptyLayout;
 
     private int pageNo = 0;
     private int pageSize = 10;
-    private ArrayList<GoodsModel> listData = new ArrayList<>();
-    private MainListAdapter adapter;
+    private ArrayList<LikeGoodsModel> listData = new ArrayList<>();
+    private CollectionListAdapter adapter;
     private boolean loading = false;
     private int currentPageSize;
 
@@ -75,10 +79,11 @@ public class LikeGoodsFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        hao_recycleview = (HaoRecyclerView) getActivity().findViewById(R.id.hao_recycleview);
-        swiperefresh = (SwipeRefreshLayout) getActivity().findViewById(R.id.swiperefresh);
+        emptyLayout = (RelativeLayout) rootView.findViewById(R.id.empty_layout);
+        hao_recycleview = (HaoRecyclerView) rootView.findViewById(R.id.hao_recycleview);
+        swiperefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
 
-        adapter = new MainListAdapter(getActivity(), listData);
+        adapter = new CollectionListAdapter(getActivity(), listData);
         hao_recycleview.setAdapter(adapter);
         swiperefresh.setColorSchemeResources(R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color,
                 R.color.btn_green_unpressed_color);
@@ -86,7 +91,6 @@ public class LikeGoodsFragment extends BaseFragment {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 initNetData();
             }
         });
@@ -135,7 +139,7 @@ public class LikeGoodsFragment extends BaseFragment {
     private void getData() {
         String url = Constants.RequestUrl + Constants.myCollectionUrl;
         Map<String, String> params = new HashMap<>();
-        params.put("token",10+"");
+        params.put("token", ValueStorage.getString("token")+"");
         params.put("limit",pageSize+"");
         params.put("p", pageNo + "");
         //showLoadingDialog("请求中....");
@@ -160,11 +164,11 @@ public class LikeGoodsFragment extends BaseFragment {
                             //Type type = new TypeToken<Logins>(){}.getType();
                             //ToastUtil.show(RegisterActivity.this,"保存成功");
                             try {
-                                ArrayList<GoodsModel> list;
+                                ArrayList<LikeGoodsModel> list;
                                 String object = new Gson().toJson(response);
                                 JSONObject jsonObject = new JSONObject(object);
                                 String dataJson = jsonObject.optString("data");
-                                Type type = new TypeToken<List<GoodsModel>>(){}.getType();
+                                Type type = new TypeToken<List<LikeGoodsModel>>(){}.getType();
                                 list = new Gson().fromJson(dataJson, type);
 
 
@@ -172,9 +176,9 @@ public class LikeGoodsFragment extends BaseFragment {
                                     refresh(list);
                                     boolean showEmpty;
                                     if (listData == null || listData.size() == 0) {
-                                        showEmpty = true;
+                                        emptyLayout.setVisibility(View.VISIBLE);
                                     } else {
-                                        showEmpty = false;
+                                        emptyLayout.setVisibility(View.GONE);
                                     }
 
 
@@ -185,7 +189,7 @@ public class LikeGoodsFragment extends BaseFragment {
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             //dismissLoadingDialog();
                             ToastUtil.show(getActivity(), response.msg);
                         }
@@ -194,7 +198,7 @@ public class LikeGoodsFragment extends BaseFragment {
 
     }
 
-    public void refresh(ArrayList<GoodsModel> requestInfo) {
+    public void refresh(ArrayList<LikeGoodsModel> requestInfo) {
 
 
         //注意此处
@@ -217,7 +221,7 @@ public class LikeGoodsFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
         hao_recycleview.smoothScrollToPosition(0);
     }
-    public void loadMore(List<GoodsModel> data) {
+    public void loadMore(List<LikeGoodsModel> data) {
         hao_recycleview.refreshComplete();
         hao_recycleview.loadMoreComplete();
         swiperefresh.setRefreshing(false);
