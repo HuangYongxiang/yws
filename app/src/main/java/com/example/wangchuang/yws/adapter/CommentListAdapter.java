@@ -34,12 +34,13 @@ import java.util.List;
 public class CommentListAdapter extends BaseAdapter {
     private List<CommentAllModel> list;
     private Context context;
+    private TwoCommentListAdapter.TwoOnCommentClickListener listenter;
 
-
-    public CommentListAdapter(List<CommentAllModel> list, Context context) {
+    public CommentListAdapter(List<CommentAllModel> list, Context context,TwoCommentListAdapter.TwoOnCommentClickListener listenter) {
         super();
         this.list = list;
         this.context = context;
+        this.listenter = listenter;
     }
     @Override
     public int getCount() {
@@ -95,12 +96,13 @@ public class CommentListAdapter extends BaseAdapter {
 
         ArrayList<CommentModel> list = model.getTwo_comment();
         TwoCommentListAdapter adapter = new TwoCommentListAdapter(list,context);
+        adapter.setTwoOnCommentClickListener(listenter);
         holder.comment_list.setAdapter(adapter);
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mOnCommentClickListener != null) {
-                    mOnCommentClickListener.onCommentClick(position,model.getUser_info());
+                    mOnCommentClickListener.onCommentClick(position,model.getId(),model.getUser_info().getUser_name());
                 }
             }
         });
@@ -112,7 +114,7 @@ public class CommentListAdapter extends BaseAdapter {
     }
     public static interface OnCommentClickListener {
         // true add; false cancel
-        public void onCommentClick(int position,UserInfo user); //传递boolean类型数据给activity
+        public void onCommentClick(int position,String id,String name); //传递boolean类型数据给activity
     }
 
     static class ViewHolder {

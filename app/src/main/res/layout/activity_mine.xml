@@ -10,13 +10,20 @@
     tools:context="com.example.wangchuang.yws.activity.MainActivity">
 
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f4f4f4"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:background="@drawable/pic_grzx">
+
             <RelativeLayout
                 android:id="@+id/toolbar_actionbar"
                 android:layout_width="match_parent"
@@ -24,126 +31,125 @@
                 android:background="@android:color/transparent">
 
                 <ImageView
-                    android:padding="5dp"
-                    android:layout_marginLeft="10px"
                     android:id="@+id/iv_back"
                     android:layout_width="27dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/icon_fh"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_marginLeft="10px"
+                    android:padding="5dp"
+                    android:src="@drawable/icon_fh" />
 
                 <TextView
-                    android:padding="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:textSize="14sp"
-                    android:textColor="@color/color_333333"
                     android:id="@+id/tv_option"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
+                    android:padding="5dp"
                     android:text="设置"
-                    />
+                    android:textColor="@color/color_333333"
+                    android:textSize="14sp" />
             </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
-            android:paddingBottom="20dp"
-            android:layout_marginTop="92dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:layout_marginTop="92dp"
+            android:paddingBottom="20dp">
+
             <android.support.v4.widget.CircleImageView
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
+                android:id="@+id/iv_header"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:src="@drawable/pic_tx"/>
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/pic_tx" />
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="48dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="48dp"
+                android:text="姓名"
                 android:textColor="@color/color_333333"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="姓名"/>
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageview"
-                android:layout_marginLeft="5dp"
-                android:layout_alignTop="@+id/tv_name"
-                android:layout_marginTop="5dp"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
+                android:layout_alignTop="@+id/tv_name"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/tv_name"
-                android:src="@drawable/icon_xg"/>
+                android:src="@drawable/icon_xg" />
+
             <TextView
-                android:layout_marginLeft="6dp"
                 android:id="@+id/tv_alter_name"
-                android:layout_alignTop="@+id/imageview"
-                android:layout_toRightOf="@+id/imageview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/imageview"
+                android:layout_marginLeft="6dp"
+                android:layout_toRightOf="@+id/imageview"
+                android:text="修改昵称"
                 android:textColor="@color/color_666666"
                 android:textSize="11sp"
-                android:textStyle="bold"
-                android:text="修改昵称"/>
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_below="@+id/tv_name"
                 android:id="@+id/tv_my_like"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_666666"
-                android:textSize="14sp"
-                android:text="我的关注"/>
-
-            <TextView
-                android:layout_toRightOf="@+id/tv_my_like"
                 android:layout_below="@+id/tv_name"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
+                android:text="我的关注"
+                android:textColor="@color/color_666666"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_my_fans"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/tv_my_like"
+                android:text="我的粉丝"
                 android:textColor="@color/color_666666"
-                android:textSize="14sp"
-                android:text="我的粉丝"/>
+                android:textSize="14sp" />
 
 
             <ImageView
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/tv_name"
                 android:id="@+id/iv_sex"
-                android:layout_toLeftOf="@+id/iv_vip"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:src="@drawable/icon_nv"/>
-            <ImageView
-                android:layout_marginRight="15dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="3dp"
                 android:layout_below="@+id/tv_name"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/iv_vip"
+                android:src="@drawable/icon_nv" />
+
+            <ImageView
+                android:id="@+id/iv_vip"
                 android:layout_width="27dp"
                 android:layout_height="12dp"
-                android:id="@+id/iv_vip"
-                android:src="@drawable/icon_vip1"/>
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tv_name"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/icon_vip1" />
 
 
         </RelativeLayout>
     </FrameLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/color_f4f4f4"/>
     <com.example.wangchuang.yws.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -243,7 +249,7 @@
                         android:layout_marginLeft="@dimen/x10"
                         android:gravity="right"
                         android:layout_toRightOf="@+id/tv_3"
-                        android:id="@+id/tv_vip_auth"
+                        android:id="@+id/tv_sex_auth"
                         android:layout_marginRight="@dimen/x10"
                         android:layout_toLeftOf="@+id/arrow_3"
                         android:layout_width="match_parent"

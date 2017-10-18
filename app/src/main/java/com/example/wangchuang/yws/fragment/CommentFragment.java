@@ -32,6 +32,7 @@ public class CommentFragment extends DialogFragment implements View.OnClickListe
     private UserInfo userInfo;
     private TextView mSendBtn;
     private View mRootView;
+    private String id,name;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,11 +61,11 @@ public class CommentFragment extends DialogFragment implements View.OnClickListe
     }
 
     private void initData() {
-        userInfo = getArguments().getParcelable(COMMENT_BEAN);
-        if (userInfo == null) {
+        id = getArguments().getString("id");
+        name = getArguments().getString("name");
+        if (name .equals("")) {
             mEditText.setHint("回复");
         } else {
-            String name = userInfo.getUser_name();
             mEditText.setHint(getString(R.string.talk_reply_hint, name));
         }
     }
@@ -93,7 +94,7 @@ public class CommentFragment extends DialogFragment implements View.OnClickListe
                 return;
             }
             if (getActivity() instanceof GoodsDetailActivity) {
-                ((GoodsDetailActivity) getActivity()).sendCommend(userInfo
+                ((GoodsDetailActivity) getActivity()).sendCommend(id
                         , mEditText.getText().toString());
             }
             mEditText.setText("");

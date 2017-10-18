@@ -2,6 +2,7 @@ package com.example.wangchuang.yws.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.activity.GoodsDetailActivity;
 import com.example.wangchuang.yws.bean.GoodsModel;
@@ -41,33 +45,75 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
 
     //将数据与界面进行绑定的操作
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         final GoodsModel model = datas.get(position);
 
         Glide.with(context).load(model.getUser_head_img())
                 .placeholder(R.drawable.pic_tx).crossFade().error(R.drawable.pic_tx).into(viewHolder.iv_header);
         String[] url=  model.getOss_imgs();
+
         if(url.length == 1){
             viewHolder.iv_goods2.setVisibility(View.GONE);
             viewHolder.iv_goods3.setVisibility(View.GONE);
-            Glide.with(context).load(url[0])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);
+            Glide.with(context).load(url[0]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            viewHolder.iv_goods1.setImageBitmap(resource);
+                        }
+                    });
+           /* Glide.with(context).load(url[0])
+                    .centerCrop()
+                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);*/
         }else if(url.length == 2){
             viewHolder.iv_goods2.setVisibility(View.VISIBLE);
             viewHolder.iv_goods3.setVisibility(View.GONE);
-            Glide.with(context).load(url[0])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);
-            Glide.with(context).load(url[1])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods2);
+            Glide.with(context).load(url[0]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            viewHolder.iv_goods1.setImageBitmap(resource);
+                        }
+                    });
+            Glide.with(context).load(url[1]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            viewHolder.iv_goods2.setImageBitmap(resource);
+                        }
+                    });
+
         }else {
             viewHolder.iv_goods2.setVisibility(View.VISIBLE);
             viewHolder.iv_goods3.setVisibility(View.VISIBLE);
-            Glide.with(context).load(url[0])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);
-            Glide.with(context).load(url[1])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods2);
-            Glide.with(context).load(url[2])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods3);
+            Glide.with(context).load(url[0]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            viewHolder.iv_goods1.setImageBitmap(resource);
+                        }
+                    });
+            Glide.with(context).load(url[1]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            viewHolder.iv_goods2.setImageBitmap(resource);
+                        }
+                    });
+            Glide.with(context).load(url[2]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            viewHolder.iv_goods3.setImageBitmap(resource);
+                        }
+                    });
+
         }
         viewHolder.tv_name.setText(model.getUser_name());
         viewHolder.tv_money.setText(model.getPrice());

@@ -27,6 +27,7 @@ public class Constants {
     public static final String mainListUrl="Index/index";//首页
     public static final String mainDetailUrl="UserDetails/article_details";//首页
     public static final String DetailCommentUrl="UserDetails/article_commonet_list";//评论列表
+    public static final String PushCommentUrl="UserDetails/user_commonet";//发表评论
     public static final String collectionUrl="UserDetails/collection";//添加收藏
     public static final String cancelCollectionUrl="UserDetails/delect_collection";//取消收藏
     public static final String userFollowUrl="Others/user_follow";//我的关注
@@ -35,6 +36,7 @@ public class Constants {
     public static final String otherPeopleUrl="Others/index";//他人资料
     public static final String myPublishUrl="User/user_index_release";//我发布的
     public static final String myCollectionUrl="User/user_collection";//我收藏的
+    public static final String mineUrl="User/user_info";//我收藏的
 
 
 

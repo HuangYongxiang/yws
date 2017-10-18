@@ -9,7 +9,7 @@
     <string name="cpb_default_rotation_speed">1</string>
     <string name="cpb_default_sweep_speed">1</string>
     <string name="empty_data">暂无数据</string>
-
+    <string name="go_now"><b>立即前往</b></string>
     <string name="talk_reply_hint">回复%s</string>
     <string name="comment_null_message">内容不能为空</string>
     <string name="the_current_group_destroyed">当前群聊已被群创建者解散</string>

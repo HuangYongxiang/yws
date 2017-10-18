@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
     View view_tip;
-
+    private ImageView mineIv,messageIv;
     private int pageNo = 0;
     private int pageSize = 10;
     private ArrayList<GoodsModel> listData = new ArrayList<>();
@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        mineIv = (ImageView) findViewById(R.id.iv_mine);
         hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         view_tip = (View) findViewById(R.id.view_tip);
@@ -111,7 +112,12 @@ public class MainActivity extends BaseActivity {
                 getData();
             }
         });
-
+        mineIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,MineActivity.class));
+            }
+        });
         initNetData();
     }
 

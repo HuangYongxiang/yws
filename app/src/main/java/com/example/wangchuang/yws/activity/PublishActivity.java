@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.bean.CommentAllModel;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.utils.CashierInputFilter;
+import com.example.wangchuang.yws.utils.StringUtil;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
@@ -37,6 +40,7 @@ import com.zhy.http.okhttp.callback.GenericsCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +81,8 @@ public class PublishActivity extends BaseActivity {
         mMoneyEt = (EditText) findViewById(R.id.money_et);
         publishBtn = (Button) findViewById(R.id.btn_publish);
         gridView = (NoScrollGridView) findViewById(R.id.gv_gridview);
-
+        InputFilter[] filters = {new CashierInputFilter()};
+        mMoneyEt.setFilters(filters);
         imgUrl.add(blankImg);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         mAdapter = new GridAdapter(mContext);
@@ -104,21 +109,33 @@ public class PublishActivity extends BaseActivity {
         publishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (StringUtil.isEmpty(mTitleEt.getText().toString())){
+                    ToastUtil.show(PublishActivity.this,"标题不能为空");
+                }else if (StringUtil.isEmpty(mContentEt.getText().toString())){
+                    ToastUtil.show(PublishActivity.this,"内容不能为空");
+                }else if (StringUtil.isEmpty(mMoneyEt.getText().toString())){
+                    ToastUtil.show(PublishActivity.this,"价格不能为空");
+                }
                 publish();
             }
         });
     }
 
     private void publish() {
+        HashMap<String,File> files = new HashMap<>();
+        for (int i = 0;i<imgUrl.size();i++){
+            File file = new File(imgUrl.get(i));
+            files.put(i+"",file);
+        }
         String url = Constants.RequestUrl + Constants.collectionUrl;
         Map<String, String> params = new HashMap<>();
         params.put("title","00d51e2300352fa36131780f24bbc5e3e4265a43");
         params.put("price",mMoneyEt.getText().toString()+"");
         params.put("content",mContentEt.getText().toString()+"");
-        params.put("imgs[]",21+"");
         //showLoadingDialog("请求中....");
         OkHttpUtils.post()//
                 .params(params)//
+                .files("imgs[]",files)
                 .url(url)//
                 .build()//
                 .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
