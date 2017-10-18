@@ -53,8 +53,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initView() {
         ValueStorage.init(LoginActivity.this);
-        /*ValueStorage.put("username","233");
-        String a=ValueStorage.getString("usernames");*/
+        ValueStorage.put("username","233");
+        /*String a=ValueStorage.getString("usernames");*/
         username=(EditText)findViewById(R.id.phone);
         password=(EditText)findViewById(R.id.passwords);
         rember=(TextView) findViewById(R.id.rember);
@@ -96,7 +96,7 @@ public class LoginActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onResponse(BeanResult response, int id)
+                    public void onResponse(final BeanResult response, int id)
                     {
                         if (response.code.equals("200")) {
 
@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity {
                                 public void onSuccess() {
                                     dismissLoadingDialog();
                                     ValueStorage.put("username",username.getText().toString().trim());
-                                    //ValueStorage.put("username","6D3405A45B5B");
+                                    ValueStorage.put("token",response.token);
                                     EMClient.getInstance().groupManager().loadAllGroups();
                                     EMClient.getInstance().chatManager().loadAllConversations();
 

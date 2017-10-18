@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
@@ -55,7 +56,7 @@ import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
-
+import android.graphics.Color;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -106,10 +107,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     static final int ITEM_PICTURE = 2;
     static final int ITEM_LOCATION = 3;
     
-    protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture, R.string.attach_location };
-    protected int[] itemdrawables = { R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector,
-            R.drawable.ease_chat_location_selector };
-    protected int[] itemIds = { ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_LOCATION };
+    protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture };
+    protected int[] itemdrawables = { R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector};
+    protected int[] itemIds = { ITEM_TAKE_PICTURE, ITEM_PICTURE };
     private boolean isMessageListInited;
     protected MyItemClickListener extendMenuItemClickListener;
     protected boolean isRoaming = false;
@@ -127,7 +127,19 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){//4.4 全透明状态栏
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0 全透明实现
+            Window window = getActivity().getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);//calculateStatusColor(Color.WHITE, (int) alphaValue)
+
+        }
         fragmentArgs = getArguments();
         // check if single chat or group chat
         chatType = fragmentArgs.getInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
@@ -204,7 +216,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     titleBar.setTitle(user.getNick());
                 }
             }
-            titleBar.setRightImageResource(R.drawable.ease_mm_title_remove);
+            titleBar.setRightImageResource(R.drawable.icon_my);
+            titleBar.setLeftImageResource(R.drawable.icon_fh);
         } else {
         	titleBar.setRightImageResource(R.drawable.ease_to_group_details_normal);
             if (chatType == EaseConstant.CHATTYPE_GROUP) {
@@ -239,6 +252,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             @Override
             public void onClick(View v) {
                 if (chatType == EaseConstant.CHATTYPE_SINGLE) {
+                    //个人中心
                     emptyHistory();
                 } else {
                     toGroupDetails();
