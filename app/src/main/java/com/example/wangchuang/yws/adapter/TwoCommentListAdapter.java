@@ -1,6 +1,8 @@
 package com.example.wangchuang.yws.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wangchuang.yws.R;
+import com.example.wangchuang.yws.activity.OtherPeopleActivity;
 import com.example.wangchuang.yws.bean.CommentAllModel;
 import com.example.wangchuang.yws.bean.CommentModel;
 import com.example.wangchuang.yws.view.CircularImage;
@@ -23,12 +26,14 @@ import java.util.List;
 public class TwoCommentListAdapter extends BaseAdapter {
     private List<CommentModel> list;
     private Context context;
+    private String commentId;
 
 
-    public TwoCommentListAdapter(List<CommentModel> list, Context context) {
+    public TwoCommentListAdapter(List<CommentModel> list, Context context,String commentId) {
         super();
         this.list = list;
         this.context = context;
+        this.commentId = commentId;
     }
     @Override
     public int getCount() {
@@ -84,8 +89,19 @@ public class TwoCommentListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if (mOnCommentClickListener != null) {
-                    mOnCommentClickListener.onTwoCommentClick(position,model.getId(),model.getUser_info().getUser_name());
+                    mOnCommentClickListener.onTwoCommentClick(position,commentId,model.getUser_info().getUser_name());
                 }
+            }
+        });
+        holder.iv_header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(context, OtherPeopleActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("uid",model.getUser_info().getUid());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
         return convertView;

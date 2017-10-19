@@ -52,68 +52,70 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
                 .placeholder(R.drawable.pic_tx).crossFade().error(R.drawable.pic_tx).into(viewHolder.iv_header);
         String[] url=  model.getOss_imgs();
 
-        if(url.length == 1){
-            viewHolder.iv_goods2.setVisibility(View.GONE);
-            viewHolder.iv_goods3.setVisibility(View.GONE);
-            Glide.with(context).load(url[0]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            viewHolder.iv_goods1.setImageBitmap(resource);
-                        }
-                    });
+        if(url!=null) {
+            if (url.length == 1) {
+                viewHolder.iv_goods2.setVisibility(View.GONE);
+                viewHolder.iv_goods3.setVisibility(View.GONE);
+                Glide.with(context).load(url[0]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                viewHolder.iv_goods1.setImageBitmap(resource);
+                            }
+                        });
            /* Glide.with(context).load(url[0])
                     .centerCrop()
                     .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);*/
-        }else if(url.length == 2){
-            viewHolder.iv_goods2.setVisibility(View.VISIBLE);
-            viewHolder.iv_goods3.setVisibility(View.GONE);
-            Glide.with(context).load(url[0]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            viewHolder.iv_goods1.setImageBitmap(resource);
-                        }
-                    });
-            Glide.with(context).load(url[1]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            viewHolder.iv_goods2.setImageBitmap(resource);
-                        }
-                    });
+            } else if (url.length == 2) {
+                viewHolder.iv_goods2.setVisibility(View.VISIBLE);
+                viewHolder.iv_goods3.setVisibility(View.GONE);
+                Glide.with(context).load(url[0]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                viewHolder.iv_goods1.setImageBitmap(resource);
+                            }
+                        });
+                Glide.with(context).load(url[1]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                viewHolder.iv_goods2.setImageBitmap(resource);
+                            }
+                        });
 
-        }else {
-            viewHolder.iv_goods2.setVisibility(View.VISIBLE);
-            viewHolder.iv_goods3.setVisibility(View.VISIBLE);
-            Glide.with(context).load(url[0]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            viewHolder.iv_goods1.setImageBitmap(resource);
-                        }
-                    });
-            Glide.with(context).load(url[1]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            viewHolder.iv_goods2.setImageBitmap(resource);
-                        }
-                    });
-            Glide.with(context).load(url[2]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            viewHolder.iv_goods3.setImageBitmap(resource);
-                        }
-                    });
+            } else {
+                viewHolder.iv_goods2.setVisibility(View.VISIBLE);
+                viewHolder.iv_goods3.setVisibility(View.VISIBLE);
+                Glide.with(context).load(url[0]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                viewHolder.iv_goods1.setImageBitmap(resource);
+                            }
+                        });
+                Glide.with(context).load(url[1]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                viewHolder.iv_goods2.setImageBitmap(resource);
+                            }
+                        });
+                Glide.with(context).load(url[2]).asBitmap().placeholder(R.drawable.pic_spxqc).error(R.drawable.pic_spxqc).centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                viewHolder.iv_goods3.setImageBitmap(resource);
+                            }
+                        });
 
+            }
         }
         viewHolder.tv_name.setText(model.getUser_name());
         viewHolder.tv_money.setText(model.getPrice());

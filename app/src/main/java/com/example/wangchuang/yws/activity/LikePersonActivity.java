@@ -16,6 +16,7 @@ import com.example.wangchuang.yws.bean.GoodsModel;
 import com.example.wangchuang.yws.bean.PersonModel;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
@@ -118,7 +119,7 @@ public class LikePersonActivity extends BaseActivity {
     private void getData() {
         String url = Constants.RequestUrl + Constants.userFollowUrl;
         Map<String, String> params = new HashMap<>();
-        params.put("token","");
+        params.put("token", ValueStorage.getString("token")+"");
         //showLoadingDialog("请求中....");
         OkHttpUtils.post()//
                 .params(params)//
@@ -165,7 +166,8 @@ public class LikePersonActivity extends BaseActivity {
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
+                            showError();
                             //dismissLoadingDialog();
                             ToastUtil.show(LikePersonActivity.this, response.msg);
                         }
@@ -220,7 +222,7 @@ public class LikePersonActivity extends BaseActivity {
     }
 
 
-    private void showError(Exception e) {
+    private void showError() {
         listData.clear();
         adapter.notifyDataSetChanged();
         hao_recycleview.refreshComplete();

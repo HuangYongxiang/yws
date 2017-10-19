@@ -73,8 +73,8 @@ public class ImageGridAdapter extends BaseAdapter {
             holder.layout.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load("")
-                    .placeholder(R.drawable.pic_spxqc)
-                    .error(R.drawable.pic_spxqc)
+                    .placeholder(R.drawable.pic_mh_1)
+                    .error(R.drawable.pic_mh_1)
                     .crossFade(1000)
                     .bitmapTransform(new BlurTransformation(mContext, 1, 4))  // “23”：设置模糊度(在0.0到25.0之间)，默认”25";"4":图片缩放比例,默认“1”。
                     .into(holder.mImg);
@@ -83,9 +83,9 @@ public class ImageGridAdapter extends BaseAdapter {
             holder.layout.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(url)
-                    .placeholder(R.drawable.pic_spxqc)
+                    .placeholder(R.drawable.pic_mh_2)
                     .crossFade()
-                    .error(R.drawable.pic_spxqc)
+                    .error(R.drawable.pic_mh_2)
                     .into(holder.mImg);
         }
         return convertView;

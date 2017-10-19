@@ -17,9 +17,6 @@
     <string name="quiting_the_chat_room">正在退出聊天室……</string>
 
 
-
-
-
     <string name="app_slogon">即时通讯云领导者</string>
     <string name="text_ack_msg">已读</string>
     <string name="text_delivered_msg">送达</string>
@@ -330,7 +327,7 @@
     <string name="update_groups_failed">更新群聊失败</string>
 
     <string name="gorup_not_found">找不到这个群组</string>
-    <string name= "no_more_messages">没有更多的消息了</string>
+    <string name="no_more_messages">没有更多的消息了</string>
     <string name="join_public_group">加入公开群</string>
     <string name="chatroom_allow_owner_leave"> 允许聊天室群主离开</string>
     <string name="delete_msg_when_exit_group">退出群组时删除聊天数据</string>

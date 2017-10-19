@@ -54,8 +54,11 @@ import me.fangx.haorefresh.LoadMoreListener;
 import okhttp3.Call;
 
 public class MineActivity extends BaseActivity implements View.OnClickListener{
-    HaoRecyclerView hao_recycleview;
-    SwipeRefreshLayout swiperefresh;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private List<Fragment> list_fragment = new ArrayList<>();
+    private List<String> list_title = new ArrayList<>();
+    private TabLayoutAdpater mAdapter;
     private int pageNo = 0;
     private int pageSize = 10;
     private ArrayList<GoodsModel> listData = new ArrayList<>();
@@ -75,11 +78,6 @@ public class MineActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void initView() {
-
-        initViewPager();
-    }
-
-    private void initViewPager() {
         mNameTv = (TextView) findViewById(R.id.tv_name);
         mAlterNameTv = (TextView) findViewById(R.id.tv_alter_name);
         mLikePersonTv = (TextView) findViewById(R.id.tv_my_like);
@@ -94,52 +92,30 @@ public class MineActivity extends BaseActivity implements View.OnClickListener{
         mPublishIv.setOnClickListener(this);
         mFansTv.setOnClickListener(this);
         mLikePersonTv.setOnClickListener(this);
+        initViewPager();
+    }
+
+    private void initViewPager() {
 
 
 
-        hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
-        swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        adapter = new MainListAdapter(mContext, listData);
-        hao_recycleview.setAdapter(adapter);
-        swiperefresh.setColorSchemeResources(R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color,
-                R.color.btn_green_unpressed_color);
-
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                initNetData();
-            }
-        });
-
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        hao_recycleview.setLayoutManager(layoutManager);
-
-        //设置自定义加载中和到底了效果
-        ProgressView progressView = new ProgressView(mContext);
-        progressView.setIndicatorId(ProgressView.BallPulse);
-        progressView.setIndicatorColor(0xff69b3e0);
-        hao_recycleview.setFootLoadingView(progressView);
-
-        TextView textView = new TextView(MainActivity.this);
-        textView.setText("已经到底啦~");
-        hao_recycleview.setFootEndView(textView);
-
-
-        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-
-                pageNo++;
-                hao_recycleview.refreshComplete();
-                hao_recycleview.loadMoreComplete();
-                if (pageNo > 1) {
-                    loading = false;
-                }
-                getData();
-            }
-        });
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        list_fragment.add(PublishGoodsFragment.newInstance(0));
+        list_fragment.add(LikeGoodsFragment.newInstance(0));
+        list_title.add("动态");
+        list_title.add("同城");
+        //设置TabLayout的模式
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        //为TabLayout添加tab名称
+        tabLayout.addTab(tabLayout.newTab().setText(list_title.get(0)));
+        tabLayout.addTab(tabLayout.newTab().setText(list_title.get(1)));
+        //getFragmentManager是fragment所在父容器的碎片管理，而getChildFragmentManager是fragment所在子容器的碎片管理。
+        // 如果用getFragmentManager会在viewpager中出现fragment不会加载的情况，所以切换回去就出现了白板。
+        //   mAdapter = new GroupTuanPagerAdpater(getActivity(), getActivity().getSupportFragmentManager(), list_fragment, list_title);
+        mAdapter = new TabLayoutAdpater(MineActivity.this, getSupportFragmentManager(), list_fragment, list_title);
+        viewPager.setAdapter(mAdapter);
+        tabLayout.setupWithViewPager(viewPager);
         getData();
     }
 
