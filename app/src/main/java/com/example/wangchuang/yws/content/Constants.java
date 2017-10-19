@@ -39,7 +39,7 @@ public class Constants {
     public static final String addLikeUrl="Others/follow";//关注
     public static final String myPublishUrl="User/user_index_release";//我发布的
     public static final String myCollectionUrl="User/user_collection";//我收藏的
-    public static final String mineUrl="User/user_info";//我的
+    //public static final String mineUrl="User/user_info";//我的
 
 
 

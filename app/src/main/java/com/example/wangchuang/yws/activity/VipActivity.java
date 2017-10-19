@@ -224,12 +224,12 @@ public class VipActivity extends BaseActivity {
                                 }else{
                                     iv_se.setImageResource(R.drawable.icon_smrz);
                                 }
-                               /* if(geren.vip_type.equals("1")){
+                                if(geren.vip_type.equals("1")){
                                     iv_vip.setImageResource(R.drawable.icon_vip1);
                                     tv_money.setText(geren.vip_time);
                                 }else{
                                     iv_vip.setImageResource(R.drawable.icon_vip2);
-                                }*/
+                                }
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
