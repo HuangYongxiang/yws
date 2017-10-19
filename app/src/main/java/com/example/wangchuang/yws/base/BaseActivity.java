@@ -88,6 +88,7 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         if (isBindEventBusHere()) {
             EventBus.getDefault().register(this);
         }
+        ValueStorage.init(getApplicationContext());
         doBeforeSetcontentView();
         setContentView(getLayoutId());
         ButterKnife.bind(this);

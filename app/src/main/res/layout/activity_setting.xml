@@ -10,7 +10,7 @@
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:clipToPadding="true"
-    tools:context="com.example.wangchuang.yws.activity.MainActivity">
+    tools:context="com.example.wangchuang.yws.activity.SettingActivity">
 
     <RelativeLayout
         android:id="@+id/fsousuo_title"

@@ -47,27 +47,29 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
         Glide.with(context).load(model.getUser_head_img())
                 .placeholder(R.drawable.pic_tx).crossFade().error(R.drawable.pic_tx).into(viewHolder.iv_header);
         String[] url=  model.getOss_imgs();
-        if(url.length == 1){
-            viewHolder.iv_goods2.setVisibility(View.GONE);
-            viewHolder.iv_goods3.setVisibility(View.GONE);
-            Glide.with(context).load(url[0])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);
-        }else if(url.length == 2){
-            viewHolder.iv_goods2.setVisibility(View.VISIBLE);
-            viewHolder.iv_goods3.setVisibility(View.GONE);
-            Glide.with(context).load(url[0])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);
-            Glide.with(context).load(url[1])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods2);
-        }else {
-            viewHolder.iv_goods2.setVisibility(View.VISIBLE);
-            viewHolder.iv_goods3.setVisibility(View.VISIBLE);
-            Glide.with(context).load(url[0])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);
-            Glide.with(context).load(url[1])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods2);
-            Glide.with(context).load(url[2])
-                    .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods3);
+        if(url != null) {
+            if (url.length == 1) {
+                viewHolder.iv_goods2.setVisibility(View.GONE);
+                viewHolder.iv_goods3.setVisibility(View.GONE);
+                Glide.with(context).load(url[0])
+                        .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);
+            } else if (url.length == 2) {
+                viewHolder.iv_goods2.setVisibility(View.VISIBLE);
+                viewHolder.iv_goods3.setVisibility(View.GONE);
+                Glide.with(context).load(url[0])
+                        .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);
+                Glide.with(context).load(url[1])
+                        .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods2);
+            } else {
+                viewHolder.iv_goods2.setVisibility(View.VISIBLE);
+                viewHolder.iv_goods3.setVisibility(View.VISIBLE);
+                Glide.with(context).load(url[0])
+                        .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods1);
+                Glide.with(context).load(url[1])
+                        .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods2);
+                Glide.with(context).load(url[2])
+                        .placeholder(R.drawable.pic_spxqc).crossFade().error(R.drawable.pic_spxqc).into(viewHolder.iv_goods3);
+            }
         }
         viewHolder.tv_name.setText(model.getUser_name());
         viewHolder.tv_money.setText(model.getPrice());

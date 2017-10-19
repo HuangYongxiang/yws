@@ -39,6 +39,13 @@ public class Constants {
 
 
 
+    public static final String yijianUrl="User/feedback";//意见反馈
+    public static final String mineUrl="User/user_info"; //个人信息
+    public static final String TequanUrl="Index/release_vip_price";//特权价格表
+    public static final String VipUrl="Index/vip_price";//vip价格表
+    public static final String SfUrl="User/people_testing";//实名认证
+    public static final String SexUrl="User/sex_testing";//性别
+
 
 
 

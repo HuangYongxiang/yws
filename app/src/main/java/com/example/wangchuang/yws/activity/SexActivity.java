@@ -11,7 +11,6 @@ import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
-import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.CommonUtil;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
@@ -24,12 +23,12 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-public class FeedbackActivity extends BaseActivity {
-    private EditText username,yijian,phone;
+public class SexActivity extends BaseActivity {
+    private EditText username;
     private Button login;
     @Override
     public int getLayoutId() {
-        return R.layout.activity_feedback;
+        return R.layout.activity_sex;
     }
 
     @Override
@@ -38,37 +37,27 @@ public class FeedbackActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        username=(EditText)findViewById(R.id.name);
-        yijian=(EditText)findViewById(R.id.yijian);
-        phone=(EditText)findViewById(R.id.phone);
-
+        username=(EditText)findViewById(R.id.phone);
         login=(Button) findViewById(R.id.btn_login);
     }
 
     public void back(View view) {
         finish();
     }
-    //tijiao
+    //修改
     public void login(View view) {
-        if (TextUtils.isEmpty(username.getText().toString().trim())) {
+        String phones = username.getText().toString().trim();
+        if (TextUtils.isEmpty(phones)) {
             ToastUtil.show(this,"请输入手机号");
             return;
         }
-        if (TextUtils.isEmpty(yijian.getText().toString().trim())) {
-            ToastUtil.show(this,"请输入手机号");
-            return;
-        }
-        if (TextUtils.isEmpty(phone.getText().toString().trim())) {
-            ToastUtil.show(this,"");
+        if (!CommonUtil.judgePhone(phones)) {
+            ToastUtil.show(this,"请输入正确的手机号");
             return;
         }
         Map<String, String> params = new HashMap<>();
-        params.put("phone",phone.getText().toString().trim());
-        params.put("problem",username.getText().toString().trim());
-        params.put("proposal",yijian.getText().toString().trim());
-        params.put("token", ValueStorage.getString("token"));
-
-        String url= Constants.BaseUrl+Constants.yijianUrl;
+        params.put("phone",phones);
+        String url= Constants.BaseUrl+Constants.loginUrl;
         showLoadingDialog("请求中....");
         OkHttpUtils.post()
                 .params(params)
@@ -80,7 +69,7 @@ public class FeedbackActivity extends BaseActivity {
                     public void onError(Call call, Exception e, int id)
                     {
                         dismissLoadingDialog();
-                        ToastUtil.show(FeedbackActivity.this,"网络异常");
+                        ToastUtil.show(SexActivity.this,"网络异常");
                     }
 
                     @Override
@@ -88,11 +77,11 @@ public class FeedbackActivity extends BaseActivity {
                     {
                         if (response.code.equals("200")) {
                             dismissLoadingDialog();
-                            ToastUtil.show(FeedbackActivity.this,response.msg);
-                            finish();
+                            ToastUtil.show(SexActivity.this,response.msg);
+                            startActivity(new Intent(SexActivity.this,MainActivity.class));
                         }else{
                             dismissLoadingDialog();
-                            ToastUtil.show(FeedbackActivity.this,response.msg);
+                            ToastUtil.show(SexActivity.this,response.msg);
                         }
                     }
                 });

@@ -118,7 +118,7 @@ public class LoginActivity extends BaseActivity {
                                     }
                                     // DemoHelper.getInstance().getUserProfileManager().asyncGetCurrentUserInfo();
                                     Intent intent = new Intent(LoginActivity.this,
-                                            MainActivity.class);
+                                            SmActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
