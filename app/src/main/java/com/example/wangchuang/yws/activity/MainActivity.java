@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.wangchuang.yws.R;
@@ -47,13 +48,14 @@ public class MainActivity extends BaseActivity {
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
     View view_tip;
-    private ImageView iv_message;
+    private ImageView iv_message,mineIv;
     private int pageNo = 0;
     private int pageSize = 10;
     private ArrayList<GoodsModel> listData = new ArrayList<>();
     private MainListAdapter adapter;
     private boolean loading = false;
     private int currentPageSize;
+    private RelativeLayout emptyLayout;
 
     @Override
     public int getLayoutId() {
@@ -66,14 +68,22 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        emptyLayout = (RelativeLayout) findViewById(R.id.empty_layout);
         hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        view_tip = (View) findViewById(R.id.view_tip);
         iv_message = (ImageView) findViewById(R.id.iv_message);
+        mineIv = (ImageView) findViewById(R.id.iv_mine);
         iv_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,ConversationActivity.class));
+            }
+        });
+        mineIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //startActivity(new Intent(MainActivity.this,MineActivity.class));
+                startActivity(new Intent(MainActivity.this,MineTestActivity.class));
             }
         });
         adapter = new MainListAdapter(mContext, listData);
@@ -171,9 +181,9 @@ public class MainActivity extends BaseActivity {
                                     refresh(list);
                                     boolean showEmpty;
                                     if (listData == null || listData.size() == 0) {
-                                        showEmpty = true;
+                                        emptyLayout.setVisibility(View.VISIBLE);
                                     } else {
-                                        showEmpty = false;
+                                        emptyLayout.setVisibility(View.GONE);
                                     }
 
 
@@ -184,7 +194,7 @@ public class MainActivity extends BaseActivity {
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             //dismissLoadingDialog();
                             ToastUtil.show(MainActivity.this, response.msg);
                         }

@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.wangchuang.yws.R;
+import com.example.wangchuang.yws.activity.OtherPeopleActivity;
 import com.example.wangchuang.yws.adapter.MainListAdapter;
 import com.example.wangchuang.yws.base.BaseFragment;
 import com.example.wangchuang.yws.bean.BeanResult;
@@ -41,7 +42,7 @@ import okhttp3.Call;
  * Created by zhaoming on 2017/10/14.
  */
 
-public class PublishGoodsFragment extends BaseFragment {
+public class OthersPublishFragment extends BaseFragment {
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
     private RelativeLayout emptyLayout;
@@ -112,13 +113,13 @@ public class PublishGoodsFragment extends BaseFragment {
             @Override
             public void onLoadMore() {
 
-                pageNo++;
+               /* pageNo++;
                 hao_recycleview.refreshComplete();
                 hao_recycleview.loadMoreComplete();
                 if (pageNo > 1) {
                     loading = false;
                 }
-                getData();
+                getData();*/
             }
         });
 
@@ -135,11 +136,10 @@ public class PublishGoodsFragment extends BaseFragment {
     }
 
     private void getData() {
-        String url = Constants.BaseUrl + Constants.myPublishUrl;
+        String url = Constants.RequestUrl + Constants.otherPublishUrl;
         Map<String, String> params = new HashMap<>();
         params.put("token", ValueStorage.getString("token")+"");
-        params.put("limit",pageSize+"");
-        params.put("p", pageNo + "");
+        params.put("uid", ((OtherPeopleActivity)getActivity()).getUid()+"");
         //showLoadingDialog("请求中....");
         OkHttpUtils.post()//
                 .params(params)//

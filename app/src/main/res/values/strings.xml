@@ -9,15 +9,12 @@
     <string name="cpb_default_rotation_speed">1</string>
     <string name="cpb_default_sweep_speed">1</string>
     <string name="empty_data">暂无数据</string>
-
+    <string name="go_now"><b>立即前往</b></string>
     <string name="talk_reply_hint">回复%s</string>
     <string name="comment_null_message">内容不能为空</string>
     <string name="the_current_group_destroyed">当前群聊已被群创建者解散</string>
     <string name="the_current_chat_room_destroyed">当前聊天室已被创建者解散</string>
     <string name="quiting_the_chat_room">正在退出聊天室……</string>
-
-
-
 
 
     <string name="app_slogon">即时通讯云领导者</string>
@@ -330,7 +327,7 @@
     <string name="update_groups_failed">更新群聊失败</string>
 
     <string name="gorup_not_found">找不到这个群组</string>
-    <string name= "no_more_messages">没有更多的消息了</string>
+    <string name="no_more_messages">没有更多的消息了</string>
     <string name="join_public_group">加入公开群</string>
     <string name="chatroom_allow_owner_leave"> 允许聊天室群主离开</string>
     <string name="delete_msg_when_exit_group">退出群组时删除聊天数据</string>

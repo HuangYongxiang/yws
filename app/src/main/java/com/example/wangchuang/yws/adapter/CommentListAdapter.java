@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wangchuang.yws.R;
+import com.example.wangchuang.yws.activity.OtherPeopleActivity;
 import com.example.wangchuang.yws.bean.CommentAllModel;
 import com.example.wangchuang.yws.bean.CommentModel;
 import com.example.wangchuang.yws.bean.UserInfo;
@@ -34,12 +36,13 @@ import java.util.List;
 public class CommentListAdapter extends BaseAdapter {
     private List<CommentAllModel> list;
     private Context context;
+    private TwoCommentListAdapter.TwoOnCommentClickListener listenter;
 
-
-    public CommentListAdapter(List<CommentAllModel> list, Context context) {
+    public CommentListAdapter(List<CommentAllModel> list, Context context,TwoCommentListAdapter.TwoOnCommentClickListener listenter) {
         super();
         this.list = list;
         this.context = context;
+        this.listenter = listenter;
     }
     @Override
     public int getCount() {
@@ -94,14 +97,26 @@ public class CommentListAdapter extends BaseAdapter {
         holder.contentTv.setText(model.getContent());
 
         ArrayList<CommentModel> list = model.getTwo_comment();
-        TwoCommentListAdapter adapter = new TwoCommentListAdapter(list,context);
+        TwoCommentListAdapter adapter = new TwoCommentListAdapter(list,context,model.getId());
+        adapter.setTwoOnCommentClickListener(listenter);
         holder.comment_list.setAdapter(adapter);
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mOnCommentClickListener != null) {
-                    mOnCommentClickListener.onCommentClick(position,model.getUser_info());
+                    mOnCommentClickListener.onCommentClick(position,model.getId(),model.getUser_info().getUser_name());
                 }
+            }
+        });
+        holder.iv_header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(context, OtherPeopleActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("uid",model.getUser_info().getUid());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
         return convertView;
@@ -112,7 +127,7 @@ public class CommentListAdapter extends BaseAdapter {
     }
     public static interface OnCommentClickListener {
         // true add; false cancel
-        public void onCommentClick(int position,UserInfo user); //传递boolean类型数据给activity
+        public void onCommentClick(int position,String id,String name); //传递boolean类型数据给activity
     }
 
     static class ViewHolder {

@@ -12,7 +12,7 @@ public class GoodsDetailModel implements Serializable {
     private String content;    //宝贝的文字说明
     private String creat_time;    //
     private String price;    //价格
-    private String oss_imgs;    //宝贝的图片 如果不是vip，
+    private ArrayList<String> oss_imgs;    //宝贝的图片 如果不是vip，
     private String nums;    //浏览量
     private String user_name;    //宝贝的主人 昵称
     private String user_head_img;    //宝贝主人的头像
@@ -31,11 +31,11 @@ public class GoodsDetailModel implements Serializable {
         this.id = id;
     }
 
-    public String getOss_imgs() {
+    public ArrayList<String> getOss_imgs() {
         return oss_imgs;
     }
 
-    public void setOss_imgs(String oss_imgs) {
+    public void setOss_imgs(ArrayList<String> oss_imgs) {
         this.oss_imgs = oss_imgs;
     }
 
