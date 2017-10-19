@@ -13,10 +13,18 @@ public class MineModel implements Serializable {
     private String people_type;//0是没有认证 1是审核中 2是已经认证
     private String vip_type;//0不是vip1是vip
     private String oss_head_img;//
-    private String background_img;//背景墙地址
+    private String oss_background_img;//背景墙地址
     private String release_type;//1是特权vip0不是特权vip
     private String vip_time;//vip剩余时间
     private String release_time;//特权剩余时间
+
+    public String getOss_background_img() {
+        return oss_background_img;
+    }
+
+    public void setOss_background_img(String oss_background_img) {
+        this.oss_background_img = oss_background_img;
+    }
 
     public String getUser_name() {
         return user_name;
@@ -64,14 +72,6 @@ public class MineModel implements Serializable {
 
     public void setOss_head_img(String oss_head_img) {
         this.oss_head_img = oss_head_img;
-    }
-
-    public String getBackground_img() {
-        return background_img;
-    }
-
-    public void setBackground_img(String background_img) {
-        this.background_img = background_img;
     }
 
     public String getRelease_type() {

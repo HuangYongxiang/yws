@@ -24,6 +24,10 @@ public class Constants {
     public static final String memberUrl2="Members/back_sms";//找回密码验证码
     public static final String refactUrl="Members/back_password";//修改密码
     public static final String publishUrl="User/user_release";//发布
+    public static final String deleteUrl="User/user_release_del";//删除发布
+    public static final String setTopUrl="User/user_top";//置顶
+    public static final String updateHeaderUrl="User/user_head_img";//上传头像
+    public static final String updateBackUrl="User/user_background_img";//上传背景
 
     public static final String mainListUrl="Index/index";//首页
     public static final String mainDetailUrl="UserDetails/article_details";//首页
@@ -40,6 +44,9 @@ public class Constants {
     public static final String myPublishUrl="User/user_index_release";//我发布的
     public static final String myCollectionUrl="User/user_collection";//我收藏的
     public static final String mineUrl="User/user_info";//我的
+    public static final String creditUrl="User/report_list";//我的信誉度
+    public static final String othersCreditUrl="Others/user_report_index";//他人信誉度
+    public static final String reportUrl="Others/user_report";//举报
 
 
 

@@ -3,7 +3,6 @@ package com.example.wangchuang.yws.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,19 +18,17 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.activity.GoodsDetailActivity;
-import com.example.wangchuang.yws.activity.OtherPeopleActivity;
 import com.example.wangchuang.yws.bean.GoodsModel;
 import com.example.wangchuang.yws.view.CircularImage;
 
 import java.util.ArrayList;
 
 
-
-public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHolder> {
+public class PublishListAdapter extends RecyclerView.Adapter<PublishListAdapter.ViewHolder> {
     public ArrayList<GoodsModel> datas = null;
     Context context;
 
-    public MainListAdapter(Context context, ArrayList<GoodsModel> datas) {
+    public PublishListAdapter(Context context, ArrayList<GoodsModel> datas) {
         this.context = context;
         this.datas = datas;
     }
@@ -39,7 +36,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
     //创建新View，被LayoutManager所调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_goods_list, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_publish_list, viewGroup, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }
@@ -144,15 +141,20 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
                 context.startActivity(intent);
             }
         });
-        viewHolder.iv_header.setOnClickListener(new View.OnClickListener() {
+        viewHolder.ll_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(context, OtherPeopleActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("uid",model.getUid());
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                if (mOnDeleteClickListener != null) {
+                    mOnDeleteClickListener.onDeleteClick(position,model.getId());
+                }
+            }
+        });
+        viewHolder.ll_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnRefreshClickListener != null) {
+                    mOnRefreshClickListener.onRefreshClick(position,model.getId());
+                }
             }
         });
     }
@@ -164,7 +166,23 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
     }
 
 
+    private OnDeleteClickListener mOnDeleteClickListener;
+    public void setOnCommentClickListener(OnDeleteClickListener onOnDeleteClickListener) {
+        mOnDeleteClickListener = onOnDeleteClickListener;
+    }
+    public static interface OnDeleteClickListener {
+        // true add; false cancel
+        public void onDeleteClick(int position,String id); //传递boolean类型数据给activity
+    }
 
+    private OnRefreshClickListener mOnRefreshClickListener;
+    public void setOnRefreshClickListener(OnRefreshClickListener onRefreshClickListener) {
+        mOnRefreshClickListener = onRefreshClickListener;
+    }
+    public static interface OnRefreshClickListener {
+        // true add; false cancel
+        public void onRefreshClick(int position,String id); //传递boolean类型数据给activity
+    }
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -180,6 +198,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
         public TextView tv_num;
         public TextView tv_time;
         public LinearLayout layout;
+        public LinearLayout ll_delete;
+        public LinearLayout ll_refresh;
 
 
 
@@ -197,6 +217,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
             tv_num = (TextView) itemView.findViewById(R.id.tv_num);
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);
             layout = (LinearLayout) itemView.findViewById(R.id.layout);
+            ll_delete = (LinearLayout) itemView.findViewById(R.id.ll_delete);
+            ll_refresh = (LinearLayout) itemView.findViewById(R.id.ll_refresh);
 
         }
     }

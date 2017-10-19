@@ -44,7 +44,7 @@ import okhttp3.Call;
  * Created by zhaoming on 2017/10/14.
  */
 
-public class LikeGoodsFragment extends BaseFragment {
+public class LikeGoodsFragment extends BaseFragment implements CollectionListAdapter.OnCancelClickListener{
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
     private RelativeLayout emptyLayout;
@@ -85,6 +85,7 @@ public class LikeGoodsFragment extends BaseFragment {
 
         adapter = new CollectionListAdapter(getActivity(), listData);
         hao_recycleview.setAdapter(adapter);
+        adapter.setOnCancelClickListener(this);
         swiperefresh.setColorSchemeResources(R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color,
                 R.color.btn_green_unpressed_color);
 
@@ -259,6 +260,48 @@ public class LikeGoodsFragment extends BaseFragment {
             }
         }, R.drawable.pic_none);*/
     }
+
+    @Override
+    public void onCancelClick(int position, String id) {
+        String url = Constants.RequestUrl + Constants.cancelCollectionUrl;
+        Map<String, String> params = new HashMap<>();
+        params.put("token",ValueStorage.getString("token")+"");
+        params.put("id",id +"");
+        //showLoadingDialog("请求中....");
+        OkHttpUtils.post()//
+                .params(params)//
+                .url(url)//
+                .build()//
+                .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id)
+                    {
+                        //dismissLoadingDialog();
+                        ToastUtil.show(getActivity(),"网络异常");
+                    }
+
+                    @Override
+                    public void onResponse(BeanResult response, int id)
+                    {
+                        if (response.code.equals("200")) {
+                            //dismissLoadingDialog();
+                            try {
+                                String object = new Gson().toJson(response);
+                                JSONObject jsonObject = new JSONObject(object);
+                                //     JSONObject obj = jsonObject.getJSONObject("data");
+                                initNetData();
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }else
+                        if (response.code.equals("400")) {
+                            //dismissLoadingDialog();
+                            ToastUtil.show(getActivity(), response.msg);
+                        }
+                    }
+                });
+    }
     @Override
     protected boolean isBindEventBusHere() {
         return false;
@@ -278,4 +321,6 @@ public class LikeGoodsFragment extends BaseFragment {
     protected void onNetworkDisConnected() {
 
     }
+
+
 }

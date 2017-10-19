@@ -2,6 +2,8 @@ package com.example.wangchuang.yws.activity;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.wangchuang.yws.R;
@@ -39,6 +41,8 @@ import okhttp3.Call;
 public class FansPersonActivity extends BaseActivity {
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
+    private LinearLayout empty_layout;
+    private TextView empty_tv;
     private int pageNo = 0;
     private int pageSize = 10;
     private ArrayList<PersonModel> listData = new ArrayList<>();
@@ -59,6 +63,8 @@ public class FansPersonActivity extends BaseActivity {
     public void initView() {
         hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        empty_layout = (LinearLayout) findViewById(R.id.empty_layout);
+        empty_tv = (TextView) findViewById(R.id.empty_tv);
 
         adapter = new PersonListAdapter(mContext, listData);
         hao_recycleview.setAdapter(adapter);
@@ -150,9 +156,11 @@ public class FansPersonActivity extends BaseActivity {
                                     refresh(list);
                                     boolean showEmpty;
                                     if (listData == null || listData.size() == 0) {
-                                        showEmpty = true;
+                                        empty_layout.setVisibility(View.VISIBLE);
+                                        empty_tv.setText("你还没有收获粉丝哦 赶紧去发布宝贝吧");
                                     } else {
-                                        showEmpty = false;
+                                        empty_layout.setVisibility(View.GONE);
+                                        empty_tv.setText("你还没有收获粉丝哦 赶紧去发布宝贝吧");
                                     }
 
 
@@ -164,6 +172,8 @@ public class FansPersonActivity extends BaseActivity {
                             }
                         }else
                         if (response.code.equals("400")) {
+                            empty_layout.setVisibility(View.VISIBLE);
+                            empty_tv.setText("你还没有收获粉丝哦 赶紧去发布宝贝吧");
                             showError();
                             //dismissLoadingDialog();
                             ToastUtil.show(FansPersonActivity.this, response.msg);

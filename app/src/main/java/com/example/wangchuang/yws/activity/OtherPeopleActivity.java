@@ -1,5 +1,6 @@
 package com.example.wangchuang.yws.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -62,9 +63,10 @@ public class OtherPeopleActivity extends BaseActivity implements View.OnClickLis
     private TabLayout tabLayout;
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
-    private TextView mNameTv,mAddLikeTv,mCardAuthTv,mSexAuthTv;
+    private TextView mNameTv,mAddLikeTv,mCardAuthTv,mSexAuthTv,mOptionTv;
     private ImageView mSexIv,mVipIv;
     private CircularImage headerView;
+    private RelativeLayout creditLayout;
     View view_tip;
     private TabLayoutAdpater mAdapter;
     private OtherPeopleModel data;
@@ -106,14 +108,19 @@ public class OtherPeopleActivity extends BaseActivity implements View.OnClickLis
         viewPager = (ViewPager) findViewById(R.id.viewPager_contentView);
 
         mNameTv = (TextView) findViewById(R.id.tv_name);
+        mOptionTv = (TextView) findViewById(R.id.tv_option);
+        mOptionTv.setText("举报");
         mAddLikeTv = (TextView) findViewById(R.id.add_like_tv);
         mCardAuthTv = (TextView) findViewById(R.id.tv_card_auth);
         mSexAuthTv = (TextView) findViewById(R.id.tv_sex_auth);
         headerView = (CircularImage) findViewById(R.id.iv_header);
         mSexIv = (ImageView) findViewById(R.id.iv_sex);
         mVipIv = (ImageView) findViewById(R.id.iv_vip);
+        creditLayout = (RelativeLayout) findViewById(R.id.rl_reputation);
+        creditLayout.setOnClickListener(this);
         backIv.setOnClickListener(this);
         mAddLikeTv.setOnClickListener(this);
+        mOptionTv.setOnClickListener(this);
         initViewPager();
     }
     private void initViewPager() {
@@ -254,6 +261,22 @@ public class OtherPeopleActivity extends BaseActivity implements View.OnClickLis
                 }else {
                     addLike();
                 }
+                break;
+            case R.id.rl_reputation:
+                Intent intent = new Intent();
+                intent.setClass(OtherPeopleActivity.this,OtherCreditActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("uid",uid);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            case R.id.tv_option:
+                Intent intent1 = new Intent();
+                intent1.setClass(OtherPeopleActivity.this,ReportActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("uid",uid);
+                intent1.putExtras(bundle1);
+                startActivity(intent1);
                 break;
             case R.id.iv_back:
                 finish();

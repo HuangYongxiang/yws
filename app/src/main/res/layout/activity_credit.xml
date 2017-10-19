@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:clipToPadding="true"
-    android:orientation="vertical"
-    tools:context="com.example.wangchuang.yws.activity.LikePersonActivity">
+    tools:context="com.example.wangchuang.yws.activity.CreditActivity">
 
     <RelativeLayout
         android:id="@+id/toolbar_actionbar"
@@ -31,16 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="我的关注"
+            android:text="信誉度"
             android:textColor="@color/color_333333"
             android:textSize="16sp" />
 
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/color_f4f4f4"/>
 
     <LinearLayout
         android:background="@color/white"
@@ -48,45 +43,54 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingTop="20px">
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_f4f4f4"/>
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/empty_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="2"/>
-            <ImageView
-                android:id="@+id/empty_iv"
-                android:layout_width="217dp"
-                android:layout_height="217dp"
-                android:src="@drawable/pic_kb"/>
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:id="@+id/empty_tv"
-                android:layout_marginLeft="5dp"
-                android:layout_below="@+id/empty_iv"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_marginBottom="50dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="14sp"
-                android:textColor="@color/color_666666"
-                android:text="你还没有收获粉丝哦 赶紧去发布宝贝吧"
-                />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="6"/>
-        </LinearLayout>
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_marginRight="5dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_z"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/empty_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/color_333333"
+                    android:text="信誉良好  无举报"
+                    />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/empty_iv"
+                android:layout_centerInParent="true"
+                android:layout_width="217dp"
+                android:layout_height="217dp"
+                android:src="@drawable/pic_xylh"/>
 
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/color_f4f4f4"/>
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swiperefresh"
             android:layout_width="match_parent"

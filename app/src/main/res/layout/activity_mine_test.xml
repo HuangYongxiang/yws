@@ -33,7 +33,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
-                        android:background="@drawable/pic_grzx">
+                        >
 
                         <ImageView
                             android:id="@+id/pic_background"
@@ -77,6 +77,13 @@
                         android:layout_marginTop="92dp"
                         android:paddingBottom="20dp">
 
+                        <ImageView
+                            android:id="@+id/alter_background_img"
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="30dp"
+                            android:layout_height="21dp"
+                            android:src="@drawable/icon_bgxj"/>
+
                         <com.example.wangchuang.yws.view.CircularImage
                             android:id="@+id/iv_header"
                             android:layout_width="56dp"
@@ -84,7 +91,13 @@
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="10dp"
                             android:src="@drawable/pic_tx" />
-
+                        <ImageView
+                            android:id="@+id/alter_header"
+                            android:layout_marginTop="35dp"
+                            android:layout_alignRight="@+id/iv_header"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/icon_txbj"/>
                         <TextView
                             android:id="@+id/tv_name"
                             android:layout_width="wrap_content"
@@ -458,5 +471,7 @@
         android:id="@+id/ll_fixedView"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

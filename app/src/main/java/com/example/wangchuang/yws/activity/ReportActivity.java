@@ -25,7 +25,6 @@ import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
 import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.CashierInputFilter;
-import com.example.wangchuang.yws.utils.DialogTool;
 import com.example.wangchuang.yws.utils.StringUtil;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
@@ -51,12 +50,11 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-public class PublishActivity extends BaseActivity implements View.OnClickListener{
+public class ReportActivity extends BaseActivity implements View.OnClickListener{
 
     private ImageView mIvBack;
 
-    private EditText mTitleEt,mContentEt,mMoneyEt;
-    private TextView mOptionTv;
+    private EditText mTitleEt,mMoneyEt;
     private Button publishBtn;
     private NoScrollGridView gridView;
     private int MAX_IMGS = 9;
@@ -65,9 +63,11 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     private ArrayList<String> imgUrl = new ArrayList<>();
     public static final String ARG_ITEM_INFO = "item_info";
     public static final String ARG_ITEM_INDEX = "item_index";
+    private String uid;
+
     @Override
     public int getLayoutId() {
-        return R.layout.activity_publish;
+        return R.layout.activity_report;
     }
 
     @Override
@@ -77,15 +77,15 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void initView() {
+        if (getIntent().getExtras()!=null){
+            uid = getIntent().getExtras().getString("uid");
+        }
         mIvBack = (ImageView) findViewById(R.id.iv_back);
-        mOptionTv = (TextView) findViewById(R.id.tv_option);
         mTitleEt = (EditText) findViewById(R.id.title_et);
-        mContentEt = (EditText) findViewById(R.id.content_et);
         mMoneyEt = (EditText) findViewById(R.id.money_et);
         publishBtn = (Button) findViewById(R.id.btn_publish);
         gridView = (NoScrollGridView) findViewById(R.id.gv_gridview);
-        InputFilter[] filters = {new CashierInputFilter()};
-        mMoneyEt.setFilters(filters);
+
         imgUrl.add(blankImg);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         mAdapter = new GridAdapter(mContext);
@@ -110,22 +110,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             }
         });
         publishBtn.setOnClickListener(this);
-        mOptionTv.setOnClickListener(this);
-        showDialog();
-    }
-
-    private void showDialog() {
-        DialogTool.showAlertDialogOptionFours(PublishActivity.this,
-                "完成发布需要满足一下条件", "1、标题及描述一定要填写\n2、至少上传三张照片\n3、价格一定要填写" ,
-                "我知道了", "下次再说", new DialogTool.OnAlertDialogOptionListener() {
-                    @Override
-                    protected void onClickOption(int p) {
-                        super.onClickOption(p);
-                        if (p == 1) {
-                            finish();
-                        }
-                    }
-                });
     }
 
     private void publish() {
@@ -137,12 +121,12 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             File file = new File(imgUrl.get(i));
             files.put(i+"",file);
         }
-        String url = Constants.BaseUrl + Constants.publishUrl;
+        String url = Constants.BaseUrl + Constants.reportUrl;
         Map<String, String> params = new HashMap<>();
         params.put("token", ValueStorage.getString("token") + "");
-        params.put("title",mTitleEt.getText().toString()+"");
-        params.put("price",mMoneyEt.getText().toString()+"");
-        params.put("content",mContentEt.getText().toString()+"");
+        params.put("uid", uid + "");
+        params.put("content",mTitleEt.getText().toString()+"");
+        params.put("phone",mMoneyEt.getText().toString()+"");
         //showLoadingDialog("请求中....");
         showLoadingDialog("上传中....");
         OkHttpUtils.post()//
@@ -156,7 +140,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                     public void onError(Call call, Exception e, int id)
                     {
                         dismissLoadingDialog();
-                        ToastUtil.show(PublishActivity.this,"网络异常");
+                        ToastUtil.show(ReportActivity.this,"网络异常");
                     }
 
                     @Override
@@ -169,24 +153,15 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                                 JSONObject jsonObject = new JSONObject(object);
                                 String dataJson = jsonObject.optString("data");
                                 Type type = new TypeToken<List<CommentAllModel>>(){}.getType();
+                                ToastUtil.show(ReportActivity.this, response.msg);
+                                ReportActivity.this.finish();
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
                         }else
                         if (response.status.equals("400")) {
                             dismissLoadingDialog();
-                            DialogTool.showAlertDialogOptionFours(PublishActivity.this,
-                                    "提示",  response.msg,
-                                    "确定", "取消", new DialogTool.OnAlertDialogOptionListener() {
-                                        @Override
-                                        protected void onClickOption(int p) {
-                                            super.onClickOption(p);
-                                            if (p == 0) {
-                                                finish();
-                                            }
-                                        }
-                                    });
-                            ToastUtil.show(PublishActivity.this, response.msg);
+                            ToastUtil.show(ReportActivity.this, response.msg);
                         }
                     }
                 });
@@ -199,7 +174,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         } else {
             ImagePicker.getInstance().setMultiMode(true);
         }
-        Intent intent = new Intent(PublishActivity.this, ImageGridActivity.class);
+        Intent intent = new Intent(ReportActivity.this, ImageGridActivity.class);
         startActivityForResult(intent, Constants.IMAGE_PICKER);
     }
 
@@ -232,28 +207,16 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.iv_back:
-                DialogTool.showAlertDialogOptionFours(PublishActivity.this,
-                        "", "确定放弃此次编辑内容吗？" ,
-                        "确定", "取消", new DialogTool.OnAlertDialogOptionListener() {
-                            @Override
-                            protected void onClickOption(int p) {
-                                super.onClickOption(p);
-                                if (p == 0) {
-                                    finish();
-                                }
-                            }
-                        });
+                finish();
                 break;
-            case R.id.tv_option:
-                startActivity(new Intent(PublishActivity.this,PublishMsgActivity.class));
-                break;
+
             case R.id.btn_publish:
                 if (StringUtil.isEmpty(mTitleEt.getText().toString())){
-                    ToastUtil.show(PublishActivity.this,"标题不能为空");
-                }else if (StringUtil.isEmpty(mContentEt.getText().toString())){
-                    ToastUtil.show(PublishActivity.this,"内容不能为空");
-                }else if (StringUtil.isEmpty(mMoneyEt.getText().toString())){
-                    ToastUtil.show(PublishActivity.this,"价格不能为空");
+                    ToastUtil.show(ReportActivity.this,"内容不能为空");
+                }else if (!StringUtil.isPhoneNumber(mMoneyEt.getText().toString())){
+                    ToastUtil.show(ReportActivity.this,"电话不能为空或者格式错误");
+                }else if (imgUrl.size()<MAX_IMGS && imgUrl.size() == 1){
+                    ToastUtil.show(ReportActivity.this,"图片不能为空");
                 }else {
                     publish();
                 }
@@ -312,16 +275,16 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            Glide.with(PublishActivity.this).load(R.drawable.icon_tjtp).crossFade().skipMemoryCache(false).into(holder.image);
+            Glide.with(ReportActivity.this).load(R.drawable.icon_tjtp).crossFade().skipMemoryCache(false).into(holder.image);
             holder.image.setScaleType(ImageView.ScaleType.FIT_XY);
             holder.imgClose.setVisibility(View.GONE);
             if (imgUrl.get(position).equals(blankImg)) {
 //                holder.image.setImageResource(R.drawable.icon_addpic_unfocused);
-                Glide.with(PublishActivity.this).load(R.drawable.icon_tjtp).crossFade().skipMemoryCache(false).into(holder.image);
+                Glide.with(ReportActivity.this).load(R.drawable.icon_tjtp).crossFade().skipMemoryCache(false).into(holder.image);
                 holder.image.setScaleType(ImageView.ScaleType.FIT_XY);
                 holder.imgClose.setVisibility(View.GONE);
             } else {
-                Glide.with(PublishActivity.this).load(imgUrl.get(position)).centerCrop().crossFade().error(R.drawable.icon_tjtp).skipMemoryCache(false).into(holder.image);
+                Glide.with(ReportActivity.this).load(imgUrl.get(position)).centerCrop().crossFade().error(R.drawable.icon_tjtp).skipMemoryCache(false).into(holder.image);
                 holder.imgClose.setVisibility(View.VISIBLE);
 
             }

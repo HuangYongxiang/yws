@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class GoodsModel implements Serializable {
     private String id;    //文章id
+    private String uid;    //文章id
     private String title;    //
     private String content;    //
     private String creat_time;    //
@@ -19,6 +20,14 @@ public class GoodsModel implements Serializable {
     private String vip_type;    //1是VIP0不是vip
     private String nums;    //浏览数量
     private String comment_num;    //留言数量
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String[] getOss_imgs() {
         return oss_imgs;

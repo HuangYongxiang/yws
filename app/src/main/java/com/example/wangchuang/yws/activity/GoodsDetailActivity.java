@@ -141,13 +141,53 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                 getCommentData();
                 break;
             case R.id.tv_delete:
-               // showCommentFrag(id,"");
+                deleteItem(id);
                 break;
             case R.id.tv_cancel:
                 optionLayout.setVisibility(View.GONE);
                 optionLayout.setAnimation(AnimationUtil.moveToViewBottom());
                 break;
         }
+    }
+    private void deleteItem(String id) {
+        String url = Constants.BaseUrl + Constants.deleteUrl;
+        Map<String, String> params = new HashMap<>();
+        params.put("token",ValueStorage.getString("token")+"");
+        params.put("id",id +"");
+        showLoadingDialog("请稍后....");
+        OkHttpUtils.post()//
+                .params(params)//
+                .url(url)//
+                .build()//
+                .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id)
+                    {
+                        dismissLoadingDialog();
+                        ToastUtil.show(GoodsDetailActivity.this,"网络异常");
+                    }
+
+                    @Override
+                    public void onResponse(BeanResult response, int id)
+                    {
+                        if (response.code.equals("200")) {
+                            dismissLoadingDialog();
+                            try {
+                                String object = new Gson().toJson(response);
+                                JSONObject jsonObject = new JSONObject(object);
+                                //     JSONObject obj = jsonObject.getJSONObject("data");
+                                finish();
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }else
+                        if (response.code.equals("400")) {
+                            dismissLoadingDialog();
+                            ToastUtil.show(GoodsDetailActivity.this, response.msg);
+                        }
+                    }
+                });
     }
 
     private void sendLike() {

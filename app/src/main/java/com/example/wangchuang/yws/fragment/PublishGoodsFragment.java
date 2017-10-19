@@ -4,17 +4,23 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.wangchuang.yws.R;
+import com.example.wangchuang.yws.activity.GoodsDetailActivity;
+import com.example.wangchuang.yws.activity.PublishActivity;
 import com.example.wangchuang.yws.adapter.MainListAdapter;
+import com.example.wangchuang.yws.adapter.PublishListAdapter;
 import com.example.wangchuang.yws.base.BaseFragment;
 import com.example.wangchuang.yws.bean.BeanResult;
+import com.example.wangchuang.yws.bean.GoodsDetailModel;
 import com.example.wangchuang.yws.bean.GoodsModel;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
 import com.example.wangchuang.yws.content.ValueStorage;
+import com.example.wangchuang.yws.utils.DialogTool;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
@@ -41,27 +47,26 @@ import okhttp3.Call;
  * Created by zhaoming on 2017/10/14.
  */
 
-public class PublishGoodsFragment extends BaseFragment {
+public class PublishGoodsFragment extends BaseFragment implements PublishListAdapter.OnDeleteClickListener,PublishListAdapter.OnRefreshClickListener{
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
     private RelativeLayout emptyLayout;
-
     private int pageNo = 0;
     private int pageSize = 10;
     private ArrayList<GoodsModel> listData = new ArrayList<>();
-    private MainListAdapter adapter;
+    private PublishListAdapter adapter;
     private boolean loading = false;
     private int currentPageSize;
 
-    public static LikeGoodsFragment mLikeGoodsFragment;
-    public static final String GOODS_GID = "goods_id";
+    public static PublishGoodsFragment mPublishGoodsFragment;
+    public static final String GOODS_GID = "goods_publish_id";
 
-    public static LikeGoodsFragment newInstance(int mid) {
+    public static PublishGoodsFragment newInstance(int mid) {
         Bundle args = new Bundle();
         args.putInt(LikeGoodsFragment.GOODS_GID, mid);
-        mLikeGoodsFragment = new LikeGoodsFragment();
-        mLikeGoodsFragment.setArguments(args);
-        return mLikeGoodsFragment;
+        mPublishGoodsFragment = new PublishGoodsFragment();
+        mPublishGoodsFragment.setArguments(args);
+        return mPublishGoodsFragment;
     }
 
     @Override
@@ -76,12 +81,15 @@ public class PublishGoodsFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+
         emptyLayout = (RelativeLayout) rootView.findViewById(R.id.empty_layout);
         hao_recycleview = (HaoRecyclerView) rootView.findViewById(R.id.hao_recycleview);
         swiperefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
 
-        adapter = new MainListAdapter(getActivity(), listData);
+        adapter = new PublishListAdapter(getActivity(), listData);
         hao_recycleview.setAdapter(adapter);
+        adapter.setOnCommentClickListener(this);
+        adapter.setOnRefreshClickListener(this);
         swiperefresh.setColorSchemeResources(R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color,
                 R.color.btn_green_unpressed_color);
 
@@ -188,6 +196,8 @@ public class PublishGoodsFragment extends BaseFragment {
                             }
                         }else
                         if (response.code.equals("400")) {
+                            showError();
+                            emptyLayout.setVisibility(View.VISIBLE);
                             //dismissLoadingDialog();
                             ToastUtil.show(getActivity(), response.msg);
                         }
@@ -244,7 +254,7 @@ public class PublishGoodsFragment extends BaseFragment {
     }
 
 
-    private void showError(Exception e) {
+    private void showError() {
         listData.clear();
         adapter.notifyDataSetChanged();
         hao_recycleview.refreshComplete();
@@ -259,6 +269,109 @@ public class PublishGoodsFragment extends BaseFragment {
             }
         }, R.drawable.pic_none);*/
     }
+
+    @Override
+    public void onDeleteClick(final int position, final String id) {
+        DialogTool.showAlertDialogOptionFours(getActivity(),
+                "提示",  "确定删除该信息",
+                "确定", "取消", new DialogTool.OnAlertDialogOptionListener() {
+                    @Override
+                    protected void onClickOption(int p) {
+                        super.onClickOption(p);
+                        if (p == 0) {
+                            deleteItem(position,id);
+                        }
+                    }
+                });
+
+    }
+    @Override
+    public void onRefreshClick(int position, String id) {
+        refreshItem(position,id);
+    }
+
+    private void refreshItem(int position, String id) {
+        String url = Constants.BaseUrl + Constants.setTopUrl;
+        Map<String, String> params = new HashMap<>();
+        params.put("token",ValueStorage.getString("token")+"");
+        params.put("id",id +"");
+        //showLoadingDialog("请求中....");
+        OkHttpUtils.post()//
+                .params(params)//
+                .url(url)//
+                .build()//
+                .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id)
+                    {
+                        //dismissLoadingDialog();
+                        ToastUtil.show(getActivity(),"网络异常");
+                    }
+
+                    @Override
+                    public void onResponse(BeanResult response, int id)
+                    {
+                        if (response.code.equals("200")) {
+                            //dismissLoadingDialog();
+                            try {
+                                String object = new Gson().toJson(response);
+                                JSONObject jsonObject = new JSONObject(object);
+                                //     JSONObject obj = jsonObject.getJSONObject("data");
+                                initNetData();
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }else
+                        if (response.code.equals("400")) {
+                            //dismissLoadingDialog();
+                            ToastUtil.show(getActivity(), response.msg);
+                        }
+                    }
+                });
+    }
+
+    private void deleteItem(int position,String id) {
+        String url = Constants.BaseUrl + Constants.deleteUrl;
+        Map<String, String> params = new HashMap<>();
+        params.put("token",ValueStorage.getString("token")+"");
+        params.put("id",id +"");
+        //showLoadingDialog("请求中....");
+        OkHttpUtils.post()//
+                .params(params)//
+                .url(url)//
+                .build()//
+                .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id)
+                    {
+                        //dismissLoadingDialog();
+                        ToastUtil.show(getActivity(),"网络异常");
+                    }
+
+                    @Override
+                    public void onResponse(BeanResult response, int id)
+                    {
+                        if (response.code.equals("200")) {
+                            //dismissLoadingDialog();
+                            try {
+                                String object = new Gson().toJson(response);
+                                JSONObject jsonObject = new JSONObject(object);
+                                //     JSONObject obj = jsonObject.getJSONObject("data");
+                                initNetData();
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }else
+                        if (response.code.equals("400")) {
+                            //dismissLoadingDialog();
+                            ToastUtil.show(getActivity(), response.msg);
+                        }
+                    }
+                });
+    }
+
     @Override
     protected boolean isBindEventBusHere() {
         return false;
@@ -278,4 +391,6 @@ public class PublishGoodsFragment extends BaseFragment {
     protected void onNetworkDisConnected() {
 
     }
+
+
 }

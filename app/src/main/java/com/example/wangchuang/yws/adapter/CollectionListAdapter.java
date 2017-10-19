@@ -37,7 +37,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
     //创建新View，被LayoutManager所调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_goods_list, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_collection_list, viewGroup, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }
@@ -140,6 +140,14 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
                 context.startActivity(intent);
             }
         });
+        viewHolder.cancel_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnCancelClickListener != null) {
+                    mOnCancelClickListener.onCancelClick(position,model.getArticle_id());
+                }
+            }
+        });
     }
 
     //获取数据的数量
@@ -149,7 +157,14 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
     }
 
 
-
+    private OnCancelClickListener mOnCancelClickListener;
+    public void setOnCancelClickListener(OnCancelClickListener onCancelClickListener) {
+        mOnCancelClickListener = onCancelClickListener;
+    }
+    public static interface OnCancelClickListener {
+        // true add; false cancel
+        public void onCancelClick(int position,String id); //传递boolean类型数据给activity
+    }
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -162,6 +177,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
         public TextView tv_name;
         public TextView tv_money;
         public TextView tv_describe;
+        public TextView cancel_tv;
         public TextView tv_num;
         public TextView tv_time;
         public LinearLayout layout;
@@ -178,6 +194,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
             iv_vip = (ImageView) itemView.findViewById(R.id.iv_vip);
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             tv_money = (TextView) itemView.findViewById(R.id.tv_money);
+            cancel_tv = (TextView) itemView.findViewById(R.id.cancel_tv);
             tv_describe = (TextView) itemView.findViewById(R.id.tv_describe);
             tv_num = (TextView) itemView.findViewById(R.id.tv_num);
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);

@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,7 @@ import com.example.wangchuang.yws.content.JsonGenericsSerializator;
 import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.fragment.LikeGoodsFragment;
 import com.example.wangchuang.yws.fragment.PublishGoodsFragment;
+import com.example.wangchuang.yws.utils.DialogTool;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
@@ -32,12 +34,16 @@ import com.example.wangchuang.yws.view.CircularImage;
 import com.example.wangchuang.yws.view.ObservableScrollView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.GenericsCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +55,8 @@ import okhttp3.Call;
 public class MineTestActivity extends BaseActivity implements View.OnClickListener,ObservableScrollView.OnObservableScrollViewScrollChanged{
     private ObservableScrollView sv_contentView;
     private LinearLayout ll_topView,ll_fixedView;
+    private ImageView alterBackImg,alterHeaderImg;
+    private RelativeLayout creaidLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private List<Fragment> list_fragment = new ArrayList<>();
@@ -65,7 +73,8 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
     private int mHeight;
     private ImageView backgroundIv;
     private ImageView backIv;
-
+    private String alterMsg = "";
+    private ArrayList<String> imgUrl = new ArrayList<>();
     @Override
     public int getLayoutId() {
         return R.layout.activity_mine_test;
@@ -78,6 +87,8 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void initView() {
+        alterBackImg = (ImageView) findViewById(R.id.alter_background_img);
+        alterHeaderImg = (ImageView) findViewById(R.id.alter_header);
         backgroundIv = (ImageView) findViewById(R.id.pic_background);
         sv_contentView= (ObservableScrollView) findViewById(R.id.sv_contentView);
         ll_topView= (LinearLayout) findViewById(R.id.ll_topView);
@@ -96,10 +107,14 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager_contentView);
         backIv = (ImageView) findViewById(R.id.iv_back);
+        creaidLayout = (RelativeLayout) findViewById(R.id.rl_reputation);
+        creaidLayout.setOnClickListener(this);
         backIv.setOnClickListener(this);
         mPublishIv.setOnClickListener(this);
         mFansTv.setOnClickListener(this);
         mLikePersonTv.setOnClickListener(this);
+        alterBackImg.setOnClickListener(this);
+        alterHeaderImg.setOnClickListener(this);
         initViewPager();
     }
 
@@ -120,6 +135,19 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
         mAdapter = new TabLayoutAdpater(MineTestActivity.this, getSupportFragmentManager(), list_fragment, list_title);
         viewPager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageSelected(int arg0) {
+            }
+
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+                if (arg0 == 0)
+                    sv_contentView.smoothScrollTo(0, mHeight);
+            }
+        });
         getData();
     }
 
@@ -167,7 +195,6 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
                         }
                     }
                 });
-
     }
 
     private void initData() {
@@ -179,7 +206,7 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
                         headerView.setImageBitmap(resource);
                     }
                 });
-        Glide.with(MineTestActivity.this).load(data.getBackground_img()).asBitmap().placeholder(R.drawable.pic_grzx).error(R.drawable.pic_grzx).centerCrop()
+        Glide.with(MineTestActivity.this).load(data.getOss_background_img()).asBitmap().placeholder(R.drawable.pic_grzx).error(R.drawable.pic_grzx).centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
@@ -229,13 +256,151 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
                 startActivity(new Intent(MineTestActivity.this,LikePersonActivity.class));
                 break;
             case R.id.iv_publish:
+
                 startActivity(new Intent(MineTestActivity.this,PublishActivity.class));
+                break;
+            case R.id.rl_reputation:
+                startActivity(new Intent(MineTestActivity.this,CreditActivity.class));
+                break;
+            case R.id.alter_background_img:
+                alterMsg = "backgroundImg";
+                imgUrl.clear();
+                goSelectGallery(1);
+                break;
+            case R.id.alter_header:
+                alterMsg = "headerImg";
+                imgUrl.clear();
+                goSelectGallery(1);
                 break;
             case R.id.iv_back:
                 finish();
                 break;
         }
     }
+    private void goSelectGallery(int num) {
+        ImagePicker.getInstance().setSelectLimit(num);
+        if (num == 1) {
+            ImagePicker.getInstance().setMultiMode(false);
+        } else {
+            ImagePicker.getInstance().setMultiMode(true);
+        }
+        Intent intent = new Intent(MineTestActivity.this, ImageGridActivity.class);
+        startActivityForResult(intent, Constants.IMAGE_PICKER);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+            if (data != null && requestCode == Constants.IMAGE_PICKER) {
+                ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                if(images!=null&&images.size()>0){
+                    for (ImageItem bean : images) {
+                        imgUrl.add(bean.path);
+                    }
+                    if (alterMsg.equals("headerImg")){
+                        updateHeader(imgUrl);
+                    }else {
+                        updateBackImg(imgUrl);
+                    }
+                }
+            } else {
+
+            }
+        }
+    }
+
+    private void updateBackImg(final ArrayList<String> imgUrls) {
+        File headerImg = new File(imgUrls.get(0));
+        String url = Constants.BaseUrl + Constants.updateBackUrl;
+        Map<String, String> params = new HashMap<>();
+        params.put("token", ValueStorage.getString("token")+"");
+        showLoadingDialog("上传中....");
+        OkHttpUtils.post()//
+                .addFile("background_img","background_img.png",headerImg)
+                .params(params)//
+                .url(url)//
+                .build()//
+                .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id)
+                    {
+                        dismissLoadingDialog();
+                        ToastUtil.show(MineTestActivity.this,"网络异常");
+                    }
+
+                    @Override
+                    public void onResponse(BeanResult response, int id)
+                    {
+                        if (response.code.equals("200")) {
+                            dismissLoadingDialog();
+                            //Type type = new TypeToken<Logins>(){}.getType();
+                            //ToastUtil.show(RegisterActivity.this,"保存成功");
+                            try {
+                                String object = new Gson().toJson(response);
+                                JSONObject jsonObject = new JSONObject(object);
+                                String dataJson = jsonObject.optString("data");
+                                Type type = new TypeToken<MineModel>(){}.getType();
+                                Glide.with(MineTestActivity.this).load(imgUrls.get(0))
+                                        .placeholder(R.drawable.pic_grzx).crossFade().error(R.drawable.pic_grzx).into(backgroundIv);
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }else
+                        if (response.code.equals("400")) {
+                            //dismissLoadingDialog();
+                            ToastUtil.show(MineTestActivity.this, response.msg);
+                        }
+                    }
+                });
+    }
+
+    private void updateHeader(final ArrayList<String> imgUrls) {
+        File headerImg = new File(imgUrls.get(0));
+        String url = Constants.BaseUrl + Constants.updateHeaderUrl;
+        Map<String, String> params = new HashMap<>();
+        params.put("token", ValueStorage.getString("token")+"");
+        showLoadingDialog("上传中....");
+        OkHttpUtils.post()//
+                .addFile("head_img","head_img.png",headerImg)
+                .params(params)//
+                .url(url)//
+                .build()//
+                .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id)
+                    {
+                        dismissLoadingDialog();
+                        ToastUtil.show(MineTestActivity.this,"网络异常");
+                    }
+
+                    @Override
+                    public void onResponse(BeanResult response, int id)
+                    {
+                        if (response.code.equals("200")) {
+                            dismissLoadingDialog();
+                            //Type type = new TypeToken<Logins>(){}.getType();
+                            //ToastUtil.show(RegisterActivity.this,"保存成功");
+                            try {
+                                String object = new Gson().toJson(response);
+                                JSONObject jsonObject = new JSONObject(object);
+                                String dataJson = jsonObject.optString("data");
+                                Type type = new TypeToken<MineModel>(){}.getType();
+                                Glide.with(MineTestActivity.this).load(imgUrls.get(0))
+                                        .placeholder(R.drawable.pic_tx).crossFade().error(R.drawable.pic_tx).into(headerView);
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }else
+                        if (response.code.equals("400")) {
+                            dismissLoadingDialog();
+                            ToastUtil.show(MineTestActivity.this, response.msg);
+                        }
+                    }
+                });
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
