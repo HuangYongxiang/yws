@@ -180,7 +180,7 @@ public class VipActivity extends BaseActivity {
     protected void login() {
         Map<String, String> params = new HashMap<>();
         params.put("token", ValueStorage.getString("token"));
-        String url= Constants.BaseUrl+Constants.mineUrl;
+        String url= Constants.RequestUrl+Constants.mineUrl;
         showLoadingDialog("请求中....");
         OkHttpUtils.post()
                 .params(params)
@@ -224,12 +224,12 @@ public class VipActivity extends BaseActivity {
                                 }else{
                                     iv_se.setImageResource(R.drawable.icon_smrz);
                                 }
-                                if(geren.vip_type.equals("1")){
+                               /* if(geren.vip_type.equals("1")){
                                     iv_vip.setImageResource(R.drawable.icon_vip1);
                                     tv_money.setText(geren.vip_time);
                                 }else{
                                     iv_vip.setImageResource(R.drawable.icon_vip2);
-                                }
+                                }*/
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
