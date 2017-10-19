@@ -12,6 +12,7 @@ import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.CommonUtil;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
@@ -49,16 +50,14 @@ public class XiugaiActivity extends BaseActivity {
     public void login(View view) {
         String phones = username.getText().toString().trim();
         if (TextUtils.isEmpty(phones)) {
-            ToastUtil.show(this,"请输入手机号");
+            ToastUtil.show(this,"请输入昵称");
             return;
         }
-        if (!CommonUtil.judgePhone(phones)) {
-            ToastUtil.show(this,"请输入正确的手机号");
-            return;
-        }
+
         Map<String, String> params = new HashMap<>();
-        params.put("phone",phones);
-        String url= Constants.BaseUrl+Constants.loginUrl;
+        params.put("token", ValueStorage.getString("token"));
+        params.put("user_name",phones);
+        String url= Constants.BaseUrl+Constants.nameUrl;
         showLoadingDialog("请求中....");
         OkHttpUtils.post()
                 .params(params)
@@ -79,8 +78,8 @@ public class XiugaiActivity extends BaseActivity {
                         if (response.code.equals("200")) {
                             dismissLoadingDialog();
                             ToastUtil.show(XiugaiActivity.this,response.msg);
-                            startActivity(new Intent(XiugaiActivity.this,MainActivity.class));
-                        }else{
+                            finish();
+                         }else{
                             dismissLoadingDialog();
                             ToastUtil.show(XiugaiActivity.this,response.msg);
                         }

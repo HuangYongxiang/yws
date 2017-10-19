@@ -62,6 +62,7 @@
         android:layout_marginTop="5dp"
         >
         <ImageView
+            android:id="@+id/img_zeng"
             android:layout_width="match_parent"
             android:layout_height="144dp"
             android:layout_marginLeft="75dp"
@@ -70,6 +71,7 @@
             android:tooltipText="ddd"
             android:src="@drawable/pic_zjz"/>
         <TextView
+            android:id="@+id/zeng"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_gravity="bottom"
@@ -85,6 +87,7 @@
         android:layout_marginTop="20dp"
         >
         <ImageView
+            android:id="@+id/img_fan"
             android:layout_width="match_parent"
             android:layout_height="144dp"
             android:layout_marginLeft="75dp"
@@ -93,6 +96,7 @@
             android:tooltipText="ddd"
             android:src="@drawable/pic_zjz"/>
         <TextView
+            android:id="@+id/fan"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_gravity="bottom"

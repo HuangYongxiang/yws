@@ -51,11 +51,11 @@ public class FeedbackActivity extends BaseActivity {
     //tijiao
     public void login(View view) {
         if (TextUtils.isEmpty(username.getText().toString().trim())) {
-            ToastUtil.show(this,"请输入手机号");
+            ToastUtil.show(this,"请输入问题描述");
             return;
         }
         if (TextUtils.isEmpty(yijian.getText().toString().trim())) {
-            ToastUtil.show(this,"请输入手机号");
+            ToastUtil.show(this,"请输意见反馈");
             return;
         }
         if (TextUtils.isEmpty(phone.getText().toString().trim())) {

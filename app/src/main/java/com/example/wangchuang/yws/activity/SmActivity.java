@@ -89,6 +89,12 @@ public class SmActivity extends BaseActivity {
                 if(biaoshi.equals("1")){
                     url1 = images.get(0).path;
                     Glide.with(SmActivity.this).load(url1).centerCrop().crossFade().error(R.drawable.icon_tjtp).skipMemoryCache(false).into(img_zeng);
+                     if(url1==null){
+                         zeng.setVisibility(View.VISIBLE);
+                     }else{
+                         zeng.setVisibility(View.GONE);
+
+                     }
                 }
                 if(biaoshi.equals("2")){
                     url2 = images.get(0).path;
@@ -110,7 +116,6 @@ public class SmActivity extends BaseActivity {
 
         Map<String, String> params = new HashMap<>();
         params.put("token", ValueStorage.getString("token"));
-
         String url= Constants.BaseUrl+Constants.SfUrl;
         showLoadingDialog("请求中....");
         OkHttpUtils.post()

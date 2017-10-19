@@ -3,7 +3,10 @@ package com.example.wangchuang.yws.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +20,9 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.adapter.VipAdapter;
@@ -25,6 +30,7 @@ import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.bean.Geren;
 import com.example.wangchuang.yws.bean.GoodsModel;
+import com.example.wangchuang.yws.bean.PayResult;
 import com.example.wangchuang.yws.bean.Price;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
@@ -95,6 +101,7 @@ public class TequanActivity extends BaseActivity {
             TextView text2=(TextView) view.findViewById(R.id.text2);
             TextView text3=(TextView) view.findViewById(R.id.text3);
             TextView buy=(TextView) view.findViewById(R.id.buy);
+            final String code=price.get(i).code;
             final  String a=price.get(i).explains.split("月")[0];
             String b=price.get(i).explains.split("月")[1];
             final String c=b.split("元")[0];
@@ -103,13 +110,13 @@ public class TequanActivity extends BaseActivity {
             buy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    popwindow( a,c);
+                    popwindow( a,c,code);
                 }
             });
             lay.addView(view);
         }
     }
-    protected void popwindow(String yue,String money){
+    protected void popwindow(String yue,String money,final String code){
         final PopupWindow popupWindow=new PopupWindow();
 
         View view = LayoutInflater.from(TequanActivity.this).inflate(
@@ -133,6 +140,7 @@ public class TequanActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //支付宝支付
+                pay(code);
             }
         });
         tv5.setOnClickListener(new View.OnClickListener() {
@@ -282,6 +290,92 @@ public class TequanActivity extends BaseActivity {
                     }
                 });
     }
+    //支付
+    protected void pay(String code) {
+        Map<String, String> params = new HashMap<>();
+        params.put("token", ValueStorage.getString("token"));
+        params.put("payment_type", "2");
+        params.put("code", code);
+        String url= Constants.zfbUrl;
+        showLoadingDialog("请求中....");
+        OkHttpUtils.post()
+                .params(params)
+                .url(url)
+                .build()
+                .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id)
+                    {
+                        dismissLoadingDialog();
+                        ToastUtil.show(TequanActivity.this,"网络异常");
+                    }
+
+                    @Override
+                    public void onResponse(BeanResult response, int id)
+                    {
+                        if (response.code.equals("200")) {
+                            dismissLoadingDialog();
+                            ToastUtil.show(TequanActivity.this,response.msg);
+                            try {
+                                String object = new Gson().toJson(response);
+                                JSONObject jsonObject = new JSONObject(object);
+                                final String dataJson;
+                                dataJson = jsonObject.optString("data");
+                                Runnable payRunnable = new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        PayTask alipay = new PayTask(TequanActivity.this);
+                                        Map<String, String> result = alipay.payV2(dataJson, true);
+                                        Log.i("msp", result.toString());
+                                        Message msg = new Message();
+                                        msg.what = SDK_PAY_FLAG;
+                                        msg.obj = result;
+                                        mHandler.sendMessage(msg);
+                                    }
+                                };
+
+                                Thread payThread = new Thread(payRunnable);
+                                payThread.start();
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }else{
+                            dismissLoadingDialog();
+                            ToastUtil.show(TequanActivity.this,response.msg);
+                        }
+                    }
+                });
+    }
+    private static final int SDK_PAY_FLAG = 1;
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    @SuppressWarnings("unchecked")
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    /**
+                     对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        login();
+                        Toast.makeText(TequanActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        Toast.makeText(TequanActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        };
+    };
     @Override
     protected boolean isBindEventBusHere() {
         return false;

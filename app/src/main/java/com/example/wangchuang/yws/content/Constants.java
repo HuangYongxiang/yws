@@ -44,9 +44,9 @@ public class Constants {
     public static final String TequanUrl="Index/release_vip_price";//特权价格表
     public static final String VipUrl="Index/vip_price";//vip价格表
     public static final String SfUrl="User/people_testing";//实名认证
-    public static final String SexUrl="User/sex_testing";//性别
-
-
+    public static final String SexUrl="User/sex_testing";//性别认证
+    public static final String nameUrl="User/save_name";//修改昵称
+    public static final String zfbUrl="http://wc306.com/App/Pay/user_alipay";//修改昵称
 
 
 
