@@ -125,6 +125,7 @@
                 android:paddingRight="10dp"
                 android:paddingLeft="10dp"
                 android:background="@null"
+                android:numeric="integer"
                 android:hint="请留下你的联系方式，以便我们回复你"
                 android:textSize="14dp"
                 android:layout_marginBottom="10dp"

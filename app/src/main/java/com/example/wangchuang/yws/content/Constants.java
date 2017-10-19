@@ -47,11 +47,19 @@ public class Constants {
     public static final String creditUrl="User/report_list";//我的信誉度
     public static final String othersCreditUrl="Others/user_report_index";//他人信誉度
     public static final String reportUrl="Others/user_report";//举报
+    //public static final String mineUrl="User/user_info";//我的
 
 
 
 
-
+    public static final String yijianUrl="User/feedback";//意见反馈
+    public static final String mineUrl="User/user_info"; //个人信息
+    public static final String TequanUrl="Index/release_vip_price";//特权价格表
+    public static final String VipUrl="Index/vip_price";//vip价格表
+    public static final String SfUrl="User/people_testing";//实名认证
+    public static final String SexUrl="User/sex_testing";//性别认证
+    public static final String nameUrl="User/save_name";//修改昵称
+    public static final String zfbUrl="http://wc306.com/App/Pay/user_alipay";//修改昵称
 
 
 

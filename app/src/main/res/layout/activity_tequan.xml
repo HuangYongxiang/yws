@@ -10,7 +10,7 @@
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:clipToPadding="true"
-    tools:context="com.example.wangchuang.yws.activity.MainActivity">
+    tools:context="com.example.wangchuang.yws.activity.VipActivity">
 
     <RelativeLayout
         android:id="@+id/fsousuo_title"
@@ -26,7 +26,7 @@
             android:gravity="center"
             android:textColor="@color/color_title"
             android:textSize="18sp"
-            android:text="发布特权服务服务"
+            android:text="发布特权服务"
             />
         <ImageView
             android:id="@+id/tv_regir"
@@ -40,71 +40,83 @@
             android:layout_marginLeft="10dp"
             />
     </RelativeLayout>
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="115dp"
-        android:background="@drawable/bg_gr"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <com.example.wangchuang.yws.view.CircularImage
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/iv_head"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center|left"
-            android:background="@drawable/pic_tx"/>
-        <RelativeLayout
+        android:layout_height="115dp">
+        <ImageView
+            android:id="@+id/img"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp">
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_gr"/>
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="115dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <com.example.wangchuang.yws.view.CircularImage
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/iv_head"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center|left"
+                android:background="@drawable/pic_tx"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp">
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@id/iv_header"
-                android:text="姓名"
-                android:textColor="@color/color_333333"
-                android:textSize="16dp" />
-            <ImageView
-                android:id="@+id/iv_se"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginTop="2dp"
-                android:layout_toRightOf="@+id/tv_name"
-                android:src="@drawable/icon_smrzf" />
-            <ImageView
-                android:id="@+id/iv_sex"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_alignStart="@+id/tv_name"
-                android:layout_below="@+id/tv_name"
-                android:layout_marginTop="7dp"
-                android:src="@drawable/icon_nv" />
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="姓名"
+                    android:textColor="@color/color_333333"
+                    android:textSize="12dp" />
+                <ImageView
+                    android:id="@+id/iv_se"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="3dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="2dp"
+                    android:layout_toRightOf="@+id/tv_name"
+                    android:src="@drawable/icon_smrzf" />
+                <ImageView
+                    android:id="@+id/iv_sex"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_alignStart="@+id/tv_name"
+                    android:layout_below="@+id/tv_name"
+                    android:layout_marginTop="7dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/icon_nv" />
 
-            <ImageView
-                android:id="@+id/iv_vip"
-                android:layout_width="27dp"
-                android:layout_height="12dp"
-                android:layout_below="@+id/tv_name"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="7dp"
-                android:layout_toRightOf="@+id/iv_sex"
-                android:src="@drawable/icon_vip1" />
+                <ImageView
+                    android:id="@+id/iv_vip"
+                    android:layout_width="27dp"
+                    android:layout_height="12dp"
+                    android:layout_below="@+id/iv_se"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="7dp"
+                    android:scaleType="fitXY"
+                    android:layout_toRightOf="@+id/iv_sex"
+                    android:src="@drawable/icon_vip2" />
 
-            <TextView
-                android:id="@+id/tv_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="23"
-                android:layout_marginRight="10dp"
-                android:textColor="@color/color_fd3240"
-                android:textSize="18sp" />
-        </RelativeLayout>
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="暂未开通特权服务"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="13dp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </FrameLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp">
@@ -135,6 +147,11 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>
+    <LinearLayout
+        android:id="@+id/lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"></LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
@@ -142,7 +159,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:text="特权介绍"
+        android:text="VIP特权"
         android:gravity="center|left"
         android:layout_marginLeft="10dp"
         android:textSize="16dp"

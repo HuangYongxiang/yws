@@ -1,10 +1,13 @@
 package com.example.wangchuang.yws.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +24,7 @@ import com.example.wangchuang.yws.content.DownLoadDialog;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
 import com.example.wangchuang.yws.utils.CommonUtil;
 import com.example.wangchuang.yws.utils.DialogTool;
+import com.example.wangchuang.yws.utils.LocaUtil;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
@@ -35,9 +39,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.Call;
-
 public class SettingActivity extends BaseActivity {
 
     private TextView yijina,huancun,banben;
@@ -51,11 +56,14 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void initPresenter() {
     }
-
+    String shuju="";
     @Override
     public void initView() {
+        LocaUtil locaUtil = new LocaUtil(SettingActivity.this);
         yijina=(TextView) findViewById(R.id.yijian);
         huancun=(TextView) findViewById(R.id.huancun);
+        shuju=locaUtil.getCacheSize();
+        huancun.setText( locaUtil.getCacheSize());
         banben=(TextView) findViewById(R.id.banben);
         loginout=(Button) findViewById(R.id.btn_loginout);
         xuan=(CheckBox) findViewById(R.id.xuan);
@@ -64,8 +72,10 @@ public class SettingActivity extends BaseActivity {
             public void onClick(View view) {
                 if(xuan.isChecked()){
                     xuan.setBackgroundResource(R.drawable.switch_off);
+                    silentSwitchOn();
                 }else{
                     xuan.setBackgroundResource(R.drawable.switch_on);
+                    silentSwitchOff();
                 }
             }
         });
@@ -82,21 +92,68 @@ public class SettingActivity extends BaseActivity {
         startActivity(intent);
     }
     public void yijian(View view) {
-        startActivity(new Intent(SettingActivity.this,RegisterActivity.class));
+        startActivity(new Intent(SettingActivity.this,FeedbackActivity.class));
     }
 
     public void huancun(View view) {
+        LocaUtil locaUtil = new LocaUtil(SettingActivity.this);
+        Timer timer=new Timer(true);
+        timer.schedule(task,0,1000);
         showLoadingDialog("正在清除缓存");
-        new Handler().postDelayed(new Runnable() {
+        locaUtil.clearAppCache();
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 dismissLoadingDialog();
                 ToastUtil.show(SettingActivity.this,"清除完成");
             }
         }, 2000);
+*/
     }
+    //静音
+    private void silentSwitchOn() {
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if(audioManager != null){
+            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            audioManager.getStreamVolume(AudioManager.STREAM_RING);
+        }
+    }
+    //开音
+    private void silentSwitchOff() {
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if(audioManager != null){
+            audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+            audioManager.getStreamVolume(AudioManager.STREAM_RING);
+        }
+    }
+    public TimerTask task=new TimerTask() {
+        @Override
+        public void run() {
+            Message message=new Message();
+            message.what=1;
+            handler.sendMessage(message);
+        }
+    };
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case 1:
+                    LocaUtil locaUtil = new LocaUtil(SettingActivity.this);
+                    huancun.setText( locaUtil.getCacheSize());
+                    if(huancun.getText().toString().equals("0KB")){
+                        dismissLoadingDialog();
+                        break;
+                    }
+            }
+
+        }
+    };
+
     public void banben(View view) {
-      final Banben banbens=new Banben();
+        final Banben banbens=new Banben();
         DialogTool.showAlertDialogOptionFours(SettingActivity.this,
                 "版本更新", "发现新版本，是否更新？" ,
                 "确定", "取消", new DialogTool.OnAlertDialogOptionListener() {

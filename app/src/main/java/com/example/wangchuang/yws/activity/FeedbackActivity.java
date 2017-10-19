@@ -11,6 +11,7 @@ import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.CommonUtil;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
@@ -47,20 +48,27 @@ public class FeedbackActivity extends BaseActivity {
     public void back(View view) {
         finish();
     }
-    //修改
+    //tijiao
     public void login(View view) {
-        String phones = username.getText().toString().trim();
-        if (TextUtils.isEmpty(phones)) {
-            ToastUtil.show(this,"请输入手机号");
+        if (TextUtils.isEmpty(username.getText().toString().trim())) {
+            ToastUtil.show(this,"请输入问题描述");
             return;
         }
-        if (!CommonUtil.judgePhone(phones)) {
-            ToastUtil.show(this,"请输入正确的手机号");
+        if (TextUtils.isEmpty(yijian.getText().toString().trim())) {
+            ToastUtil.show(this,"请输意见反馈");
+            return;
+        }
+        if (TextUtils.isEmpty(phone.getText().toString().trim())) {
+            ToastUtil.show(this,"");
             return;
         }
         Map<String, String> params = new HashMap<>();
-        params.put("phone",phones);
-        String url= Constants.BaseUrl+Constants.loginUrl;
+        params.put("phone",phone.getText().toString().trim());
+        params.put("problem",username.getText().toString().trim());
+        params.put("proposal",yijian.getText().toString().trim());
+        params.put("token", ValueStorage.getString("token"));
+
+        String url= Constants.BaseUrl+Constants.yijianUrl;
         showLoadingDialog("请求中....");
         OkHttpUtils.post()
                 .params(params)
@@ -81,7 +89,7 @@ public class FeedbackActivity extends BaseActivity {
                         if (response.code.equals("200")) {
                             dismissLoadingDialog();
                             ToastUtil.show(FeedbackActivity.this,response.msg);
-                            startActivity(new Intent(FeedbackActivity.this,MainActivity.class));
+                            finish();
                         }else{
                             dismissLoadingDialog();
                             ToastUtil.show(FeedbackActivity.this,response.msg);
