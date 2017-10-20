@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.example.wangchuang.yws.huanxin.DemoDBManager;
+import com.example.wangchuang.yws.huanxin.DemoHelper;
 import com.example.wangchuang.yws.utils.GlideImageLoaderImagePicker;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
@@ -28,7 +30,7 @@ public class MyApplication extends Application {
         instance = this;
 
         //init demo helper
-       // DemoHelper.getInstance().init(applicationContext);
+        DemoHelper.getInstance().init(applicationContext);
         EMOptions options=new EMOptions();
         options.setAcceptInvitationAlways(false);
         EaseUI.getInstance().init(this, options);

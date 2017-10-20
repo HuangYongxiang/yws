@@ -137,11 +137,46 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
             holder.name.setText(room != null && !TextUtils.isEmpty(room.getName()) ? room.getName() : username);
             holder.motioned.setVisibility(View.GONE);
         }else {
-
-
-            EaseUserUtils.setUserAvatar(getContext(), username, holder.avatar);
-            EaseUserUtils.setUserNick(username, holder.name);
             holder.motioned.setVisibility(View.GONE);
+            Map<String, String> params = new HashMap<>();
+            params.put("phone",username);
+            final ViewHolder finalHolder = holder;
+            OkHttpUtils.post()//
+                    .params(params)//
+                    .url(Constants.RequestUrl+Constants.huanxinUrl)//
+                    .build()//
+                    .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                    {
+                        @Override
+                        public void onError(okhttp3.Call call, Exception e, int id)
+                        {
+                            ToastUtil.show(getContext(),"网络异常");
+                        }
+
+                        @Override
+                        public void onResponse(BeanResult response, int id)
+                        {
+                            if (response.code.equals("200")) {
+                                 try {
+                                    String object = new Gson().toJson(response);
+                                    JSONObject jsonObject = new JSONObject(object);
+                                    String dataJson;
+                                    dataJson = jsonObject.optString("data");
+                                    Type type = new TypeToken<Huanxin>(){}.getType();
+                                    Huanxin huan=new Gson().fromJson(dataJson,Huanxin.class);
+                                    EaseUserUtils.setUserAvatar(getContext(), huan.oss_head_img, finalHolder.avatar);
+                                    EaseUserUtils.setUserNick(huan.user_name, finalHolder.name);
+                                }catch (JSONException e){
+                                    e.printStackTrace();
+                                }
+                            }else{
+                                ToastUtil.show(getContext(), "获取失败");
+                            }
+                        }
+                    });
+            /*EaseUserUtils.setUserAvatar(getContext(), username, holder.avatar);
+            EaseUserUtils.setUserNick(username, holder.name);*/
+
         }
 
         EaseAvatarOptions avatarOptions = EaseUI.getInstance().getAvatarOptions();
