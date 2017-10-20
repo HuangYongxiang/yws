@@ -227,8 +227,6 @@ public abstract class EaseChatRow extends LinearLayout {
                     public void onResponse(BeanResult response, int id)
                     {
                         if (response.status.equals("200")) {
-                            //Type type = new TypeToken<Logins>(){}.getType();
-                            //ToastUtil.show(RegisterActivity.this,"保存成功");
                             try {
                                 String object = new Gson().toJson(response);
                                 JSONObject jsonObject = new JSONObject(object);
