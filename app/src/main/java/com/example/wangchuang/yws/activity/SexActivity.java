@@ -101,6 +101,12 @@ public class SexActivity extends BaseActivity {
                 if(biaoshi.equals("2")){
                     url2 = images.get(0).path;
                     Glide.with(SexActivity.this).load(url1).centerCrop().crossFade().error(R.drawable.icon_tjtp).skipMemoryCache(false).into(img_fan);
+                    if(url2==null){
+                        fan.setVisibility(View.VISIBLE);
+                    }else{
+                        fan.setVisibility(View.GONE);
+
+                    }
                 }
             } else {
 

@@ -53,7 +53,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initView() {
         ValueStorage.init(LoginActivity.this);
-        ValueStorage.put("username","233");
         /*String a=ValueStorage.getString("usernames");*/
         username=(EditText)findViewById(R.id.phone);
         password=(EditText)findViewById(R.id.passwords);

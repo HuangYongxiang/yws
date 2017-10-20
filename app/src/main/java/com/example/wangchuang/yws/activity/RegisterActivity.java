@@ -9,9 +9,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
+import com.example.wangchuang.yws.bean.Geren;
+import com.example.wangchuang.yws.bean.Xieyi;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
 import com.example.wangchuang.yws.utils.CommonUtil;
@@ -19,9 +22,15 @@ import com.example.wangchuang.yws.utils.CommonUtils;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.GenericsCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +46,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     EditText phone;
     EditText password;
     EditText name;
+    TextView xieyi;
     @Override
     public int getLayoutId() {
         return R.layout.activity_register;
@@ -45,9 +55,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void initPresenter() {
     }
-
+  String urlss="";
     @Override
     public void initView() {
+        xieyi();
         phone=(EditText)findViewById(R.id.phone);
         password=(EditText)findViewById(R.id.passwords);
         name=(EditText)findViewById(R.id.name);
@@ -62,6 +73,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         radioGroup.check(R.id.nan);
         enter=(Button) findViewById(R.id.btn_enter);
         enter.setOnClickListener(this);
+        xieyi=(TextView) findViewById(R.id.xieyi);
+        xieyi.setOnClickListener(this);
     }
 
 
@@ -81,6 +94,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     String nember="";
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.xieyi:
+                AdDetailActivity.startAdDetailActivity(RegisterActivity.this, "协议",urlss);
+                break;
             case R.id.tv_get_code:
                 String phones = phone.getText().toString().trim();
                 if (TextUtils.isEmpty(phones)) {
@@ -96,7 +112,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 timeCount.start();
                 Map<String, String> params = new HashMap<>();
                 params.put("phone",phones);
-                String url= Constants.BaseUrl+Constants.memberUrl1;
+                final String url= Constants.BaseUrl+Constants.memberUrl1;
                 OkHttpUtils.post()
                         .params(params)
                         .url(url)
@@ -166,7 +182,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             {
                                 if (response.code.equals("200")) {
                                     ToastUtil.show(RegisterActivity.this,response.msg);
-                                    finish();
+                                    try {
+                                        String object = new Gson().toJson(response);
+                                        JSONObject jsonObject = new JSONObject(object);
+                                        String dataJson;
+                                        dataJson = jsonObject.optString("data");
+                                        Type type = new TypeToken<Xieyi>(){}.getType();
+                                        Xieyi  xieyi = new Gson().fromJson(dataJson, type);
+                                        urlss=xieyi.url;
+                                    }catch (JSONException e){
+                                        e.printStackTrace();
+                                    }
                                 }else{
                                     ToastUtil.show(RegisterActivity.this,response.msg);
                                 }
@@ -179,7 +205,34 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         finish();
     }
 
+    protected void xieyi(){
+        Map<String, String> paramss = new HashMap<>();
 
+        String urls= "http://wc306.com/App/Index/xieyi ";
+        OkHttpUtils.post()//
+                .params(paramss)//
+                .url(urls)//
+                .build()//
+                .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id)
+                    {
+                        ToastUtil.show(RegisterActivity.this,"网络异常");
+                    }
+
+                    @Override
+                    public void onResponse(BeanResult response, int id)
+                    {
+                        if (response.code.equals("200")) {
+                            ToastUtil.show(RegisterActivity.this,response.msg);
+                            finish();
+                        }else{
+                            ToastUtil.show(RegisterActivity.this,response.msg);
+                        }
+                    }
+                });
+    }
     @Override
     protected boolean isBindEventBusHere() {
         return false;

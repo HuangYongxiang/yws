@@ -22,12 +22,14 @@ import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.DownLoadDialog;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.CommonUtil;
 import com.example.wangchuang.yws.utils.DialogTool;
 import com.example.wangchuang.yws.utils.LocaUtil;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
+import com.hyphenate.chat.EMClient;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.GenericsCallback;
 
@@ -86,6 +88,11 @@ public class SettingActivity extends BaseActivity {
     }
     //退出登录
     public void login(View view) {
+
+        EMClient.getInstance().logout(true);
+        ValueStorage.remove("username");
+        ValueStorage.remove("islogin");
+        ValueStorage.remove("token");
         //杀掉之前的所有activity*/
         Intent intent=new Intent(SettingActivity.this,LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
