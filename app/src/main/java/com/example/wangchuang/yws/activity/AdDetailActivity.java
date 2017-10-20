@@ -3,9 +3,11 @@ package com.example.wangchuang.yws.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +29,13 @@ public class AdDetailActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fx_detail);
+		//当系统版本为4.4或者4.4以上时可以使用沉浸式状态栏
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			//透明状态栏 g
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			//透明导航栏
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+		}
 		_layout = (LinearLayout) findViewById(R.id.root_ll);
 
 		webView = (WebView) findViewById(R.id.webView_info);
