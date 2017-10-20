@@ -9,11 +9,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
-import com.example.wangchuang.yws.bean.Geren;
 import com.example.wangchuang.yws.bean.Xieyi;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
@@ -55,7 +53,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void initPresenter() {
     }
-  String urlss="";
+
     @Override
     public void initView() {
         xieyi();
@@ -77,7 +75,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         xieyi.setOnClickListener(this);
     }
 
-
+    String urlss="";
 
     String sex="1";
     @Override
@@ -112,7 +110,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 timeCount.start();
                 Map<String, String> params = new HashMap<>();
                 params.put("phone",phones);
-                final String url= Constants.BaseUrl+Constants.memberUrl1;
+                String url= Constants.BaseUrl+Constants.memberUrl1;
                 OkHttpUtils.post()
                         .params(params)
                         .url(url)
@@ -182,17 +180,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             {
                                 if (response.code.equals("200")) {
                                     ToastUtil.show(RegisterActivity.this,response.msg);
-                                    try {
-                                        String object = new Gson().toJson(response);
-                                        JSONObject jsonObject = new JSONObject(object);
-                                        String dataJson;
-                                        dataJson = jsonObject.optString("data");
-                                        Type type = new TypeToken<Xieyi>(){}.getType();
-                                        Xieyi  xieyi = new Gson().fromJson(dataJson, type);
-                                        urlss=xieyi.url;
-                                    }catch (JSONException e){
-                                        e.printStackTrace();
-                                    }
+                                    finish();
                                 }else{
                                     ToastUtil.show(RegisterActivity.this,response.msg);
                                 }
@@ -208,7 +196,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     protected void xieyi(){
         Map<String, String> paramss = new HashMap<>();
 
-        String urls= "http://wc306.com/App/Index/xieyi ";
+        String urls= "http://wc306.com/App/Index/xieyi";
         OkHttpUtils.post()//
                 .params(paramss)//
                 .url(urls)//
@@ -225,8 +213,18 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     public void onResponse(BeanResult response, int id)
                     {
                         if (response.code.equals("200")) {
-                            //ToastUtil.show(RegisterActivity.this,response.msg);
-
+                            ToastUtil.show(RegisterActivity.this,response.msg);
+                            try {
+                                String object = new Gson().toJson(response);
+                                JSONObject jsonObject = new JSONObject(object);
+                                String dataJson;
+                                dataJson = jsonObject.optString("data");
+                                Type type = new TypeToken<Xieyi>(){}.getType();
+                                Xieyi  xieyi = new Gson().fromJson(dataJson, type);
+                                urlss=xieyi.url;
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
                         }else{
                             ToastUtil.show(RegisterActivity.this,response.msg);
                         }
