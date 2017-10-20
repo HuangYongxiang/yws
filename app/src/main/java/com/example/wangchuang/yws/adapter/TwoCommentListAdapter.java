@@ -13,9 +13,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wangchuang.yws.R;
+import com.example.wangchuang.yws.activity.LoginActivity;
 import com.example.wangchuang.yws.activity.OtherPeopleActivity;
 import com.example.wangchuang.yws.bean.CommentAllModel;
 import com.example.wangchuang.yws.bean.CommentModel;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.view.CircularImage;
 
 import java.util.List;
@@ -88,9 +90,15 @@ public class TwoCommentListAdapter extends BaseAdapter {
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mOnCommentClickListener != null) {
-                    mOnCommentClickListener.onTwoCommentClick(position,commentId,model.getUser_info().getUser_name());
+                if(ValueStorage.getString("islogin") != null && ValueStorage.getString("islogin").equals("1")) {
+                    //聊天
+                    if (mOnCommentClickListener != null) {
+                        mOnCommentClickListener.onTwoCommentClick(position,commentId,model.getUser_info().getUser_name());
+                    }
+                }else {
+                    context.startActivity(new Intent(context, LoginActivity.class));
                 }
+
             }
         });
         holder.iv_header.setOnClickListener(new View.OnClickListener() {

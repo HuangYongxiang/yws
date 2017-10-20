@@ -75,6 +75,9 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
     private ImageView backIv;
     private String alterMsg = "";
     private ArrayList<String> imgUrl = new ArrayList<>();
+
+    private TextView tv_option;
+    private RelativeLayout rl_sex_auth,rl_vip_auth,rl_publish_service,rl_card_auth;
     @Override
     public int getLayoutId() {
         return R.layout.activity_mine_test;
@@ -108,9 +111,23 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
         viewPager = (ViewPager) findViewById(R.id.viewPager_contentView);
         backIv = (ImageView) findViewById(R.id.iv_back);
         creaidLayout = (RelativeLayout) findViewById(R.id.rl_reputation);
+
+        tv_option = (TextView) findViewById(R.id.tv_option);
+        rl_sex_auth = (RelativeLayout) findViewById(R.id.rl_sex_auth);
+        rl_vip_auth = (RelativeLayout) findViewById(R.id.rl_vip_auth);
+        rl_publish_service = (RelativeLayout) findViewById(R.id.rl_publish_service);
+        rl_card_auth = (RelativeLayout) findViewById(R.id.rl_card_auth);
+
+        rl_vip_auth.setOnClickListener(this);
+        rl_publish_service.setOnClickListener(this);
+        rl_card_auth.setOnClickListener(this);
         creaidLayout.setOnClickListener(this);
         backIv.setOnClickListener(this);
         mPublishIv.setOnClickListener(this);
+        mAlterNameTv.setOnClickListener(this);
+        tv_option.setOnClickListener(this);
+        rl_sex_auth.setOnClickListener(this);
+
         mFansTv.setOnClickListener(this);
         mLikePersonTv.setOnClickListener(this);
         alterBackImg.setOnClickListener(this);
@@ -249,6 +266,38 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.rl_vip_auth:
+                startActivity(new Intent(MineTestActivity.this,VipActivity.class));
+                break;
+            case R.id.rl_publish_service:
+                startActivity(new Intent(MineTestActivity.this,TequanActivity.class));
+                break;
+            case R.id.rl_card_auth:
+                if (data.getPeople_type().equals("0")){
+                    startActivity(new Intent(MineTestActivity.this,SmActivity.class));
+                }else if (data.getPeople_type().equals("1")){
+                    //mCardAuthTv.setText("审核中");
+                }else if (data.getPeople_type().equals("2")){
+                    startActivity(new Intent(MineTestActivity.this,SmActivity2.class));
+                }
+
+                break;
+            case R.id.rl_sex_auth:
+                if (data.getSex_type().equals("0")){
+                    startActivity(new Intent(MineTestActivity.this,SexActivity.class));
+                }else if (data.getSex_type().equals("1")){
+                    //mSexAuthTv.setText("审核中");
+                }else if (data.getSex_type().equals("2")){
+                    startActivity(new Intent(MineTestActivity.this,SexActivity2.class));
+                }
+
+                break;
+            case R.id.tv_alter_name:
+                startActivity(new Intent(MineTestActivity.this,XiugaiActivity.class));
+                break;
+            case R.id.tv_option:
+                startActivity(new Intent(MineTestActivity.this,SettingActivity.class));
+                break;
             case R.id.tv_my_fans:
                 startActivity(new Intent(MineTestActivity.this,FansPersonActivity.class));
                 break;
@@ -429,6 +478,13 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
             }
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
+    }
+
     @Override
     protected boolean isBindEventBusHere() {
         return false;
@@ -436,7 +492,9 @@ public class MineTestActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onEventComming(EventCenter eventCenter) {
-
+        /*if(eventCenter != null && eventCenter.getEventCode() == Constants.EB_CODE_REFRESH_MINE){
+            getData();
+        }*/
     }
 
     @Override

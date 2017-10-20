@@ -249,7 +249,7 @@
                             android:background="@color/color_f4f4f4"/>
 
                         <RelativeLayout
-                            android:id="@+id/rl_vip_auth"
+                            android:id="@+id/rl_sex_auth"
                             android:layout_width="match_parent"
                             android:layout_height="44dp"
                             android:background="@color/white"
@@ -303,7 +303,7 @@
                             android:background="@color/color_f4f4f4"/>
 
                         <RelativeLayout
-                            android:id="@+id/rl_sex_auth"
+                            android:id="@+id/rl_vip_auth"
                             android:layout_width="match_parent"
                             android:layout_height="44dp"
                             android:background="@color/white"

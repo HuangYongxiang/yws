@@ -25,6 +25,8 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.GenericsCallback;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -138,8 +140,10 @@ public class SexActivity extends BaseActivity {
                     {
                         if (response.code.equals("200")) {
                             dismissLoadingDialog();
+                            /*EventCenter eventCenter = new EventCenter(Constants.EB_CODE_REFRESH_MINE);
+                            EventBus.getDefault().post(eventCenter);*/
                             ToastUtil.show(SexActivity.this,response.msg);
-                            startActivity(new Intent(SexActivity.this,MainActivity.class));
+                            finish();
                         }else{
                             dismissLoadingDialog();
                             ToastUtil.show(SexActivity.this,response.msg);

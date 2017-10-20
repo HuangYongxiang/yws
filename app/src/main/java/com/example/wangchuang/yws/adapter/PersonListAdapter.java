@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -58,7 +59,7 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Vi
         }else {
             viewHolder.iv_vip.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_vip2));
         }
-        viewHolder.iv_header.setOnClickListener(new View.OnClickListener() {
+        viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -86,6 +87,7 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Vi
         private ImageView iv_sex;
         private ImageView iv_vip;
         public TextView tv_name;
+        public RelativeLayout layout;
 
 
 
@@ -96,6 +98,7 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Vi
             iv_sex = (ImageView) itemView.findViewById(R.id.iv_sex);
             iv_vip = (ImageView) itemView.findViewById(R.id.iv_vip);
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            layout = (RelativeLayout) itemView.findViewById(R.id.layout);
 
 
         }
