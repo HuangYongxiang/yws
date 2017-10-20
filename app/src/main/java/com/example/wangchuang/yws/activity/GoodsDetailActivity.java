@@ -2,6 +2,7 @@ package com.example.wangchuang.yws.activity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -149,6 +150,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+    //删除
     private void deleteItem(String id) {
         String url = Constants.BaseUrl + Constants.deleteUrl;
         Map<String, String> params = new HashMap<>();
@@ -189,7 +191,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
-
+    //收藏
     private void sendLike() {
         String url = Constants.RequestUrl + Constants.collectionUrl;
         Map<String, String> params = new HashMap<>();
@@ -233,6 +235,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
+    //  取消收藏
     private void cancelCollection() {
         String url = Constants.RequestUrl + Constants.cancelCollectionUrl;
         Map<String, String> params = new HashMap<>();
@@ -367,6 +370,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                                 JSONObject obj = jsonObject.getJSONObject("data");
                                 JSONArray array = obj.getJSONArray("oss_imgs");
                                 ArrayList<String> imageList = new ArrayList<String>();
+                                Log.e("object",object);
                                 for(int i = 0;i<array.length();i++){
                                     imageList.add(array.getString(i));
                                 }

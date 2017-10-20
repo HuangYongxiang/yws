@@ -7,7 +7,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.wangchuang.yws.R;
-import com.example.wangchuang.yws.adapter.MainListAdapter;
 import com.example.wangchuang.yws.adapter.PersonListAdapter;
 import com.example.wangchuang.yws.base.BaseActivity;
 import com.example.wangchuang.yws.bean.BeanResult;
@@ -46,9 +45,10 @@ public class FansPersonActivity extends BaseActivity {
     private int pageNo = 0;
     private int pageSize = 10;
     private ArrayList<PersonModel> listData = new ArrayList<>();
-    private PersonListAdapter adapter;
     private boolean loading = false;
     private int currentPageSize;
+    private PersonListAdapter adapter;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_like_person;
@@ -192,14 +192,23 @@ public class FansPersonActivity extends BaseActivity {
         hao_recycleview.loadMoreComplete();
         swiperefresh.setRefreshing(false);
         listData.clear();
-        if (requestInfo != null  && requestInfo.size() > 0) {
-            listData.addAll(requestInfo);
-            if (currentPageSize < pageSize) {
+        if(requestInfo != null&&requestInfo.size() == pageSize) {
+            if (requestInfo != null && requestInfo.size() > 0) {
+                listData.addAll(requestInfo);
+               /* if (currentPageSize < pageSize) {
+                    hao_recycleview.loadMoreEnd();
+                    hao_recycleview.setCanloadMore(false);
+                }*/
+            } else {
                 hao_recycleview.loadMoreEnd();
                 hao_recycleview.setCanloadMore(false);
             }
-        } else {
-
+        }else if (requestInfo != null && requestInfo.size() < pageSize) {
+            listData.addAll(requestInfo);
+            hao_recycleview.loadMoreEnd();
+            hao_recycleview.setCanloadMore(false);
+        }else {
+            hao_recycleview.loadMoreEnd();
             hao_recycleview.setCanloadMore(false);
         }
 

@@ -169,6 +169,8 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                                 JSONObject jsonObject = new JSONObject(object);
                                 String dataJson = jsonObject.optString("data");
                                 Type type = new TypeToken<List<CommentAllModel>>(){}.getType();
+                                ToastUtil.show(PublishActivity.this, response.msg);
+                                finish();
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
