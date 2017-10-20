@@ -59,6 +59,12 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Vi
         }else {
             viewHolder.iv_vip.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_vip2));
         }
+        if(model.getUser_info().getPeople_type()!=null&&model.getUser_info().getType().equals("1")){
+            viewHolder.iv_people_type.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_smrzf));
+
+        }else {
+            viewHolder.iv_people_type.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_smrz));
+        }
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,6 +92,7 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Vi
         public CircularImage iv_header;
         private ImageView iv_sex;
         private ImageView iv_vip;
+        private ImageView iv_people_type;
         public TextView tv_name;
         public RelativeLayout layout;
 
@@ -96,7 +103,8 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Vi
             super(itemView);
             iv_header = (CircularImage) itemView.findViewById(R.id.iv_header);
             iv_sex = (ImageView) itemView.findViewById(R.id.iv_sex);
-            iv_vip = (ImageView) itemView.findViewById(R.id.iv_vip);
+            iv_sex = (ImageView) itemView.findViewById(R.id.iv_sex);
+            iv_people_type = (ImageView) itemView.findViewById(R.id.iv_people_type);
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             layout = (RelativeLayout) itemView.findViewById(R.id.layout);
 

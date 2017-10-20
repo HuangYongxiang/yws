@@ -41,7 +41,7 @@ public class SexActivity extends BaseActivity {
     String url1,url2;
     @Override
     public int getLayoutId() {
-        return R.layout.activity_sr;
+        return R.layout.activity_sex;
     }
 
     @Override

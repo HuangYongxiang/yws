@@ -134,9 +134,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
             case R.id.go_buy_tv:
                 if(ValueStorage.getString("islogin") != null && ValueStorage.getString("islogin").equals("1")) {
                    //聊天
-                    /*startActivity(new Intent(GoodsDetailActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, data.getHuanxin_id())
-                            .putExtra(EaseConstant.EXTRA_CHAT_TYPE,1));*/
-                    startActivity(new Intent(GoodsDetailActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID,"15838309259 ")
+                    startActivity(new Intent(GoodsDetailActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, data.getHuanxin_id())
                             .putExtra(EaseConstant.EXTRA_CHAT_TYPE,1));
                 }else {
                     startActivity(new Intent(GoodsDetailActivity.this, LoginActivity.class));

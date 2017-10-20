@@ -191,6 +191,8 @@ public class LikeGoodsFragment extends BaseFragment implements CollectionListAda
                             }
                         }else
                         if (response.code.equals("400")) {
+                            showError();
+                            emptyLayout.setVisibility(View.VISIBLE);
                             //dismissLoadingDialog();
                             ToastUtil.show(getActivity(), response.msg);
                         }
@@ -254,7 +256,7 @@ public class LikeGoodsFragment extends BaseFragment implements CollectionListAda
     }
 
 
-    private void showError(Exception e) {
+    private void showError() {
         listData.clear();
         adapter.notifyDataSetChanged();
         hao_recycleview.refreshComplete();

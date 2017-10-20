@@ -78,6 +78,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void initView() {
         mIvBack = (ImageView) findViewById(R.id.iv_back);
+        mIvBack.setOnClickListener(this);
         mOptionTv = (TextView) findViewById(R.id.tv_option);
         mTitleEt = (EditText) findViewById(R.id.title_et);
         mContentEt = (EditText) findViewById(R.id.content_et);

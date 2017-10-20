@@ -16,7 +16,7 @@ public class Constants {
     public static final int IMAGE_PICKER = 1;
 
 
-    public static final String BaseUrl="http://47.95.118.150/index.php/App/";
+    public static final String BaseUrl="http://wc306.com/index.php/App/";
     public static final String RequestUrl="http://wc306.com/index.php/App/";
 
 

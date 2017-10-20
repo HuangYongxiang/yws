@@ -133,6 +133,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
         }else {
             viewHolder.iv_vip.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_vip2));
         }
+
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

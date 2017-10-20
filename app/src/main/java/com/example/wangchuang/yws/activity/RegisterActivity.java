@@ -213,7 +213,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     public void onResponse(BeanResult response, int id)
                     {
                         if (response.code.equals("200")) {
-                            ToastUtil.show(RegisterActivity.this,response.msg);
+                            //ToastUtil.show(RegisterActivity.this,response.msg);
                             try {
                                 String object = new Gson().toJson(response);
                                 JSONObject jsonObject = new JSONObject(object);

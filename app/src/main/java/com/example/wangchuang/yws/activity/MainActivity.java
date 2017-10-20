@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -247,7 +248,9 @@ public class MainActivity extends BaseActivity {
                                 ArrayList<GoodsModel> list;
                                 String object = new Gson().toJson(response);
                                 JSONObject jsonObject = new JSONObject(object);
+
                                 String dataJson = jsonObject.optString("data");
+                                Log.e("dataJson",dataJson+"");
                                 Type type = new TypeToken<List<GoodsModel>>(){}.getType();
                                 list = new Gson().fromJson(dataJson, type);
 
