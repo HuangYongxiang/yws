@@ -175,7 +175,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
+                        if (response.code.equals("400")) {
                             dismissLoadingDialog();
                             DialogTool.showAlertDialogOptionFours(PublishActivity.this,
                                     "提示",  response.msg,
@@ -256,7 +256,9 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                     ToastUtil.show(PublishActivity.this,"内容不能为空");
                 }else if (StringUtil.isEmpty(mMoneyEt.getText().toString())){
                     ToastUtil.show(PublishActivity.this,"价格不能为空");
-                }else {
+                }else if (imgUrl.size()<MAX_IMGS && imgUrl.size()<4){
+                    ToastUtil.show(PublishActivity.this,"至少上传三张图片");
+                }else{
                     publish();
                 }
                 break;
