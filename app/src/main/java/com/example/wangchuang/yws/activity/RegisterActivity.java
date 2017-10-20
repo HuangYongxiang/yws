@@ -225,8 +225,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     public void onResponse(BeanResult response, int id)
                     {
                         if (response.code.equals("200")) {
-                            ToastUtil.show(RegisterActivity.this,response.msg);
-                            finish();
+                            //ToastUtil.show(RegisterActivity.this,response.msg);
+
                         }else{
                             ToastUtil.show(RegisterActivity.this,response.msg);
                         }
