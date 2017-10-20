@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity {
                                 @Override
                                 public void onSuccess() {
                                     dismissLoadingDialog();
-                                    ValueStorage.put("username",username.getText().toString().trim());
+                                     ValueStorage.put("username",username.getText().toString().trim());
                                     ValueStorage.put("token",response.token);
                                     EMClient.getInstance().groupManager().loadAllGroups();
                                     EMClient.getInstance().chatManager().loadAllConversations();
