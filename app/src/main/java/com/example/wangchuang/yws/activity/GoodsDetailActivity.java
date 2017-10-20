@@ -1,5 +1,6 @@
 package com.example.wangchuang.yws.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,7 @@ import com.example.wangchuang.yws.view.NoScrollListView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
+import com.hyphenate.easeui.EaseConstant;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.GenericsCallback;
 
@@ -100,6 +102,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
         mRefreshTv = (TextView) findViewById(R.id.tv_refresh);
         mDeleteTv = (TextView) findViewById(R.id.tv_delete);
         mCancelTv = (TextView) findViewById(R.id.tv_cancel);
+        mBuyTv = (TextView) findViewById(R.id.go_buy_tv);
         mCommentNumTv = (TextView) findViewById(R.id.tv_comment_num);
         commentRl = (RelativeLayout) findViewById(R.id.comment_rl);
         headerImg = (CircularImage) findViewById(R.id.iv_header);
@@ -115,6 +118,8 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
         mRefreshTv.setOnClickListener(this);
         mDeleteTv.setOnClickListener(this);
         mCancelTv.setOnClickListener(this);
+        mBuyTv.setOnClickListener(this);
+        mBackIv.setOnClickListener(this);
 
         getData();
         getCommentData();
@@ -123,15 +128,36 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.like_rl:
-                if (isLike){
-                    cancelCollection();
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.go_buy_tv:
+                if(ValueStorage.getString("islogin") != null && ValueStorage.getString("islogin").equals("1")) {
+                   //聊天
+                    startActivity(new Intent(GoodsDetailActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, data.getHuanxin_id())
+                            .putExtra(EaseConstant.EXTRA_CHAT_TYPE,1));
                 }else {
-                    sendLike();
+                    startActivity(new Intent(GoodsDetailActivity.this, LoginActivity.class));
                 }
                 break;
+            case R.id.like_rl:
+                if(ValueStorage.getString("islogin") != null && ValueStorage.getString("islogin").equals("1")) {
+                    if (isLike){
+                        cancelCollection();
+                    }else {
+                        sendLike();
+                    }
+                }else {
+                    startActivity(new Intent(GoodsDetailActivity.this, LoginActivity.class));
+                }
+
+                break;
             case R.id.comment_rl:
-                showCommentFrag(id,"");
+                if(ValueStorage.getString("islogin") != null && ValueStorage.getString("islogin").equals("1")) {
+                    showCommentFrag(id,"");
+                }else {
+                    startActivity(new Intent(GoodsDetailActivity.this, LoginActivity.class));
+                }
                 break;
             case R.id.iv_option:
                 optionLayout.setVisibility(View.VISIBLE);
@@ -313,6 +339,7 @@ public class GoodsDetailActivity extends BaseActivity implements View.OnClickLis
                                 String dataJson = jsonObject.optString("data");
                                 Type type = new TypeToken<List<CommentAllModel>>(){}.getType();
                                 commentData = new Gson().fromJson(dataJson, type);
+                                Log.e("commentData",dataJson);
                                 if(commentData == null){
                                     mCommentNumTv.setText("留言 0" );
                                     showEmpty();

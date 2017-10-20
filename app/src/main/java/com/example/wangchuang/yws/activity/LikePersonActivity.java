@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -52,6 +53,8 @@ public class LikePersonActivity extends BaseActivity {
     private PersonListAdapter adapter;
     private boolean loading = false;
     private int currentPageSize;
+    private ImageView backIv;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_like_person;
@@ -68,6 +71,13 @@ public class LikePersonActivity extends BaseActivity {
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         empty_layout = (LinearLayout) findViewById(R.id.empty_layout);
         empty_tv = (TextView) findViewById(R.id.empty_tv);
+        backIv = (ImageView) findViewById(R.id.iv_back);
+        backIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         adapter = new PersonListAdapter(mContext, listData);
         hao_recycleview.setAdapter(adapter);
         swiperefresh.setColorSchemeResources(R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color,

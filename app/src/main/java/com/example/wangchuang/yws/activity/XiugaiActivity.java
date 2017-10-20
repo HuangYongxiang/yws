@@ -20,6 +20,8 @@ import com.example.wangchuang.yws.utils.netstatus.NetUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.GenericsCallback;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,6 +80,8 @@ public class XiugaiActivity extends BaseActivity {
                         if (response.code.equals("200")) {
                             dismissLoadingDialog();
                             ToastUtil.show(XiugaiActivity.this,response.msg);
+                           /* EventCenter eventCenter = new EventCenter(Constants.EB_CODE_REFRESH_MINE);
+                            EventBus.getDefault().post(eventCenter);*/
                             finish();
                          }else{
                             dismissLoadingDialog();

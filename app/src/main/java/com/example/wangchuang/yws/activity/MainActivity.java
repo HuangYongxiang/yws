@@ -19,6 +19,7 @@ import com.example.wangchuang.yws.bean.BeanResult;
 import com.example.wangchuang.yws.bean.GoodsModel;
 import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
+import com.example.wangchuang.yws.content.ValueStorage;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.example.wangchuang.yws.utils.eventbus.EventCenter;
 import com.example.wangchuang.yws.utils.netstatus.NetUtils;
@@ -76,14 +77,23 @@ public class MainActivity extends BaseActivity {
         iv_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,ConversationActivity.class));
+                if(ValueStorage.getString("islogin") != null && ValueStorage.getString("islogin").equals("1")) {
+                    startActivity(new Intent(MainActivity.this, ConversationActivity.class));
+                }else {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
             }
         });
         mineIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //startActivity(new Intent(MainActivity.this,MineActivity.class));
-                startActivity(new Intent(MainActivity.this,MineTestActivity.class));
+
+                if(ValueStorage.getString("islogin") != null && ValueStorage.getString("islogin").equals("1")) {
+                    startActivity(new Intent(MainActivity.this,MineTestActivity.class));
+                }else {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
             }
         });
         adapter = new MainListAdapter(mContext, listData);

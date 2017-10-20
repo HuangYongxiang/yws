@@ -3,6 +3,7 @@ package com.example.wangchuang.yws.activity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ public class FansPersonActivity extends BaseActivity {
     HaoRecyclerView hao_recycleview;
     SwipeRefreshLayout swiperefresh;
     private LinearLayout empty_layout;
+    private ImageView backIv;
     private TextView empty_tv;
     private int pageNo = 0;
     private int pageSize = 10;
@@ -65,7 +67,13 @@ public class FansPersonActivity extends BaseActivity {
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         empty_layout = (LinearLayout) findViewById(R.id.empty_layout);
         empty_tv = (TextView) findViewById(R.id.empty_tv);
-
+        backIv = (ImageView) findViewById(R.id.iv_back);
+        backIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         adapter = new PersonListAdapter(mContext, listData);
         hao_recycleview.setAdapter(adapter);
         swiperefresh.setColorSchemeResources(R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color, R.color.btn_green_unpressed_color,

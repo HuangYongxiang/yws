@@ -1,11 +1,14 @@
 package com.example.wangchuang.yws.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,6 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.activity.GoodsDetailActivity;
+import com.example.wangchuang.yws.activity.VipActivity;
+import com.example.wangchuang.yws.utils.DialogTool;
 
 import java.util.List;
 
@@ -63,6 +68,7 @@ public class ImageGridAdapter extends BaseAdapter {
             holder.mImg = (ImageView) convertView.findViewById(R.id.item_img);
             holder.mGoVip = (TextView) convertView.findViewById(R.id.tv_go_vip);
             holder.layout = (LinearLayout) convertView.findViewById(R.id.layout);
+            holder.framelayout = (FrameLayout) convertView.findViewById(R.id.framelayout);
 
             convertView.setTag(holder);
         } else {
@@ -78,6 +84,23 @@ public class ImageGridAdapter extends BaseAdapter {
                     .crossFade(1000)
                     .bitmapTransform(new BlurTransformation(mContext, 1, 4))  // “23”：设置模糊度(在0.0到25.0之间)，默认”25";"4":图片缩放比例,默认“1”。
                     .into(holder.mImg);
+            holder.mGoVip.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+            holder.framelayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    /*DialogTool.showAlertDialogOptionFours(mContext,
+                            "提示",  "确定删除该信息",
+                            "确定", "取消", new DialogTool.OnAlertDialogOptionListener() {
+                                @Override
+                                protected void onClickOption(int p) {
+                                    super.onClickOption(p);
+                                    if (p == 0) {
+                                    }
+                                }
+                            });*/
+                    mContext.startActivity(new Intent(mContext, VipActivity.class));
+                }
+            });
         }else {
             String url = data.get(position);
             holder.layout.setVisibility(View.VISIBLE);
@@ -99,5 +122,6 @@ public class ImageGridAdapter extends BaseAdapter {
         TextView mGoVip;
         ImageView mImg;
         LinearLayout layout;
+        FrameLayout framelayout;
     }
 }

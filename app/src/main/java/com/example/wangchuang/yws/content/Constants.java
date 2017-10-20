@@ -11,6 +11,8 @@ import com.example.wangchuang.yws.utils.StringUtil;
 
 public class Constants {
 
+    public static final int EB_CODE_REFRESH_MINE = 1;
+
     public static final int IMAGE_PICKER = 1;
 
 

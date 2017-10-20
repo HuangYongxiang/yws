@@ -62,10 +62,6 @@ public class LoginActivity extends BaseActivity {
         regist=(Button) findViewById(R.id.btn_register);
     }
 
-    public void back(View view) {
-        finish();
-    }
-    //登录
     public void login(View view) {
         final  String phones = username.getText().toString().trim();
         final String passswords = password.getText().toString().trim();
@@ -108,6 +104,7 @@ public class LoginActivity extends BaseActivity {
                                     dismissLoadingDialog();
                                     ValueStorage.put("username",username.getText().toString().trim());
                                     ValueStorage.put("token",response.token);
+                                    ValueStorage.put("islogin","1");
                                     EMClient.getInstance().groupManager().loadAllGroups();
                                     EMClient.getInstance().chatManager().loadAllConversations();
 
@@ -117,9 +114,6 @@ public class LoginActivity extends BaseActivity {
                                         // Log.e("LoginActivity", "update current user nick fail");
                                     }
                                     // DemoHelper.getInstance().getUserProfileManager().asyncGetCurrentUserInfo();
-                                    Intent intent = new Intent(LoginActivity.this,
-                                            ConversationActivity.class);
-                                    startActivity(intent);
                                     finish();
                                 }
 
@@ -150,7 +144,7 @@ public class LoginActivity extends BaseActivity {
     }
     //注册
     public void register(View view) {
-        startActivity(new Intent(LoginActivity.this,SettingActivity.class));
+        startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
     }
     //忘记密码
     public void rembers(View view) {
