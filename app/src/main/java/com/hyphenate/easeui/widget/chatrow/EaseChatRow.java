@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wangchuang.yws.bean.BeanResult;
+import com.example.wangchuang.yws.bean.Huanxin;
+import com.example.wangchuang.yws.content.Constants;
 import com.example.wangchuang.yws.content.JsonGenericsSerializator;
 import com.example.wangchuang.yws.utils.ToastUtil;
 import com.google.gson.Gson;
@@ -140,13 +142,13 @@ public abstract class EaseChatRow extends LinearLayout {
         if(userAvatarView != null) {
             //set nickname and avatar
             if (message.direct() == Direct.SEND) {
-                register(message.getTo(),message.getFrom(),"1");
-                EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
+                register(message.getFrom());
+                //EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
 
             } else {
-                register(message.getTo(),message.getFrom(),"2");
-                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
-                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
+                register(message.getFrom());
+                //EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+                //EaseUserUtils.setUserNick(message.getFrom(), usernickView);
             }
         }
         if(deliveredView != null){
@@ -208,12 +210,12 @@ public abstract class EaseChatRow extends LinearLayout {
         }
 
     }
-    protected  void register(final String types1,final String types2,final String types3){
+    protected  void register(final String types){
         Map<String, String> params = new HashMap<>();
-        params.put("id",types1);
+        params.put("phone",types);
         OkHttpUtils.post()//
                 .params(params)//
-                .url("http://47.93.189.208:8083/message/group/query")//
+                .url(Constants.RequestUrl+Constants.huanxinUrl)//
                 .build()//
                 .execute(new GenericsCallback<BeanResult>(new JsonGenericsSerializator())
                 {
@@ -226,23 +228,22 @@ public abstract class EaseChatRow extends LinearLayout {
                     @Override
                     public void onResponse(BeanResult response, int id)
                     {
-                        if (response.status.equals("200")) {
+                        if (response.code.equals("200")) {
                             try {
                                 String object = new Gson().toJson(response);
                                 JSONObject jsonObject = new JSONObject(object);
                                 String dataJson;
                                 dataJson = jsonObject.optString("data");
-                               // Type type = new TypeToken<List<Qun>>(){}.getType();
-
-                                EaseUserUtils.setUserAvatar(context, types2, userAvatarView);
-                                EaseUserUtils.setUserNick(types2, usernickView);
+                                Type type = new TypeToken<Huanxin>(){}.getType();
+                                Huanxin huan=new Gson().fromJson(dataJson,Huanxin.class);
+                                EaseUserUtils.setUserAvatar(context, huan.oss_head_img, userAvatarView);
+                                EaseUserUtils.setUserNick(huan.user_name, usernickView);
 
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
                         }else
-                        if (response.status.equals("400")) {
-
+                        if (response.code.equals("400")) {
                             ToastUtil.show(context, response.msg);
                         }
                     }

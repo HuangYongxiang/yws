@@ -60,7 +60,7 @@ public class Constants {
     public static final String SexUrl="User/sex_testing";//性别认证
     public static final String nameUrl="User/save_name";//修改昵称
     public static final String zfbUrl="http://wc306.com/App/Pay/user_alipay";//修改昵称
-
+    public static final String huanxinUrl="Index/nickname_headimg";//环信
 
 
 
