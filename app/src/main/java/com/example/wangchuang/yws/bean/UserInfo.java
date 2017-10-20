@@ -14,6 +14,15 @@ public class UserInfo implements Serializable, Parcelable {
     private String type;
     private String oss_head_img;
     private String uid;
+    private String people_type;
+
+    public String getPeople_type() {
+        return people_type;
+    }
+
+    public void setPeople_type(String people_type) {
+        this.people_type = people_type;
+    }
 
     public String getUid() {
         return uid;

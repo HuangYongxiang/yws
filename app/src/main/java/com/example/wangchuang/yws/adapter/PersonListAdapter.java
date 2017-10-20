@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.wangchuang.yws.R;
 import com.example.wangchuang.yws.activity.GoodsDetailActivity;
+import com.example.wangchuang.yws.activity.OtherPeopleActivity;
 import com.example.wangchuang.yws.bean.GoodsModel;
 import com.example.wangchuang.yws.bean.PersonModel;
 import com.example.wangchuang.yws.view.CircularImage;
@@ -33,7 +34,7 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Vi
     //创建新View，被LayoutManager所调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_goods_list, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_person, viewGroup, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }
@@ -43,21 +44,31 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Vi
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         final PersonModel model = datas.get(position);
 
-        Glide.with(context).load(model.getOss_head_img())
+        Glide.with(context).load(model.getUser_info().getOss_head_img())
                 .placeholder(R.drawable.pic_tx).crossFade().error(R.drawable.pic_tx).into(viewHolder.iv_header);
 
-        viewHolder.tv_name.setText(model.getUser_name());
-        if(model.getSex().equals("1")){
+        viewHolder.tv_name.setText(model.getUser_info().getUser_name());
+        if(model.getUser_info().getSex()!=null&&model.getUser_info().getSex().equals("1")){
             viewHolder.iv_sex.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_nan));
         }else {
             viewHolder.iv_sex.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_nv));
         }
-        if(model.getType().equals("1")){
+        if(model.getUser_info().getType()!=null&&model.getUser_info().getType().equals("1")){
             viewHolder.iv_vip.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_vip1));
         }else {
             viewHolder.iv_vip.setImageDrawable(context.getResources().getDrawable(R.drawable.icon_vip2));
         }
-
+        viewHolder.iv_header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(context, OtherPeopleActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("uid",model.getUser_info().getUid());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     //获取数据的数量

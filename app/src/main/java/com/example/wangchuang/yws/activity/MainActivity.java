@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity {
     private void getData() {
         String url = Constants.RequestUrl + Constants.mainListUrl;
         Map<String, String> params = new HashMap<>();
-        params.put("limit",10+"");
+        params.put("limit",pageSize+"");
         params.put("p",pageNo + "");
         //showLoadingDialog("请求中....");
         OkHttpUtils.post()//
@@ -212,14 +212,23 @@ public class MainActivity extends BaseActivity {
         hao_recycleview.loadMoreComplete();
         swiperefresh.setRefreshing(false);
         listData.clear();
-        if (requestInfo != null  && requestInfo.size() > 0) {
-            listData.addAll(requestInfo);
-            if (currentPageSize < pageSize) {
+        if(requestInfo != null&&requestInfo.size() == pageSize) {
+            if (requestInfo != null && requestInfo.size() > 0) {
+                listData.addAll(requestInfo);
+               /* if (currentPageSize < pageSize) {
+                    hao_recycleview.loadMoreEnd();
+                    hao_recycleview.setCanloadMore(false);
+                }*/
+            } else {
                 hao_recycleview.loadMoreEnd();
                 hao_recycleview.setCanloadMore(false);
             }
-        } else {
-
+        }else if (requestInfo != null && requestInfo.size() < pageSize) {
+            listData.addAll(requestInfo);
+            hao_recycleview.loadMoreEnd();
+            hao_recycleview.setCanloadMore(false);
+        }else {
+            hao_recycleview.loadMoreEnd();
             hao_recycleview.setCanloadMore(false);
         }
 

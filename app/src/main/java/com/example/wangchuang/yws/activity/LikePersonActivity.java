@@ -4,6 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -150,7 +151,8 @@ public class LikePersonActivity extends BaseActivity {
                                 String object = new Gson().toJson(response);
                                 JSONObject jsonObject = new JSONObject(object);
                                 String dataJson = jsonObject.optString("data");
-                                Type type = new TypeToken<List<GoodsModel>>(){}.getType();
+                                Log.e("dataJson",dataJson);
+                                Type type = new TypeToken<List<PersonModel>>(){}.getType();
                                 list = new Gson().fromJson(dataJson, type);
 
                                 if (pageNo == 1) {
@@ -186,21 +188,29 @@ public class LikePersonActivity extends BaseActivity {
 
     public void refresh(ArrayList<PersonModel> requestInfo) {
 
-
         //注意此处
         hao_recycleview.setCanloadMore(true);
         hao_recycleview.refreshComplete();
         hao_recycleview.loadMoreComplete();
         swiperefresh.setRefreshing(false);
         listData.clear();
-        if (requestInfo != null  && requestInfo.size() > 0) {
-            listData.addAll(requestInfo);
-            if (currentPageSize < pageSize) {
+        if(requestInfo != null&&requestInfo.size() == pageSize) {
+            if (requestInfo != null && requestInfo.size() > 0) {
+                listData.addAll(requestInfo);
+               /* if (currentPageSize < pageSize) {
+                    hao_recycleview.loadMoreEnd();
+                    hao_recycleview.setCanloadMore(false);
+                }*/
+            } else {
                 hao_recycleview.loadMoreEnd();
                 hao_recycleview.setCanloadMore(false);
             }
-        } else {
-
+        }else if (requestInfo != null && requestInfo.size() < pageSize) {
+            listData.addAll(requestInfo);
+            hao_recycleview.loadMoreEnd();
+            hao_recycleview.setCanloadMore(false);
+        }else {
+            hao_recycleview.loadMoreEnd();
             hao_recycleview.setCanloadMore(false);
         }
 
